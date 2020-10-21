@@ -70,7 +70,7 @@ using HotChocolate.AzureFunctions
 
 2. Dependency Inject the new **IGraphQLAzureFunctionsExecutorProxy** into the Function Endpoint:
 ```csharp
-using HotChocolate.AzureFunctions
+using HotChocolate.AzureFunctionsProxy
 using....
 
 public class StarWarsFunctionEndpoint
