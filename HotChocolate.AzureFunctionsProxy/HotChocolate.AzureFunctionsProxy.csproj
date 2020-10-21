@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Link="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.162" />
+  </ItemGroup>
+
+</Project>
