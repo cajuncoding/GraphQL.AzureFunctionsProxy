@@ -65,7 +65,7 @@ handle the request.
 
   * Note: The namespace for this new middleware and proxy classes as needed is:
 ```csharp
-using HotChocolate.AzureFunctions
+using HotChocolate.AzureFunctionsProxy
 ```
 
 2. Dependency Inject the new **IGraphQLAzureFunctionsExecutorProxy** into the Function Endpoint:
