@@ -10,8 +10,8 @@ This is **Unofficial** but working for most common use cases.
 This also includes a working example of the StarWars Project running as an Azure Function
 and modified only as needed to run as expected (with v11 API)!
 
-###vNuget Package (.netcoreapp3.0)
-To use this as-is in your project, add the [HotChocolate.AzureFunctionsProxy]() NuGet package to your project.
+### Nuget Package (.netcoreapp3.0)
+To use this as-is in your project, add the [HotChocolate.AzureFunctionsProxy](https://www.nuget.org/packages/HotChocolate.AzureFunctionsProxy) NuGet package to your project.
  and wire up your Starup and AzureFunction endpoint as outlined below...
 
 
