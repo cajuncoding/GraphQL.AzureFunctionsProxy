@@ -24,8 +24,8 @@ implementation samples don't account for various common use cases like BatchRequ
 
 ### NOTES: 
 1. **NOTE:** According to the HotChocolate team on Slack, they will provide an Official AzureFunctions 
-middleware as part of v11. :-)
-2. **WARNING: Very Limited Testing has been done on this but I am actively using it on projects, 
+middleware as part of v11 (eventually). :-)
+2. **WARNING: Limited Testing has been done on this but I am actively using it on projects, 
 and will update with any findings.**
 
 ## Goals
@@ -37,11 +37,11 @@ painless and simple as possible *(with a few design assumptions aside)*.
 * Keep this adaptation layer as lean and DRY as possible while also supporting as much OOTB
 functionality as possible.
 * Ensures that the Azure Functions paradigm and flexibility are not lost, so that all OOTB 
-C# bindings, DI, and current Function invokation are maintained.
+C# bindings, DI, and current Function invocation are maintained.
 
 ## Implementation:
 This approach uses a "Middleware Proxy" pattern whereby we provide the functionality of the 
-middleware via a proxy class that can be injected into the Azure Function,
+HotChocolate HTTP middleware via a proxy class that can be injected into the Azure Function,
 but otherwise do not change the existing AzureFunctions invocation pipeline.
 
 This Proxy exposes an "executor" interface that can process the HttpContext in an AzureFunction.
