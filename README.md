@@ -49,14 +49,14 @@ However, any pre/post logic could be added before/after the invocation of the ex
 *IGraphQLAzureFunctionsExecutorProxy*.
 
 This proxy is setup by internally configuring a Middleware Proxy that is an encapsulation of the 
-existing *HttpPostMiddleware* & *HttpGetMiddleware* configred as a simple pipeline processing POST 
+existing *HttpPostMiddleware* & *HttpGetMiddleware* configured as a simple pipeline for processing POST 
 requests first and then defaulting back to GET requests, and erroring out if neither are able to 
 handle the request.
 
 ## Key Elements:
 
 ### Startup Configuration
-1. The following Middleware initializer must be added into a valid AzureFunctions Configuration Startup.cs
+1. The following Middleware initializer must be added into a valid AzureFunctions Configuration 'Startup.cs'
   * All other elements of HotChocolate initialization are the same using the v11 API. 
 ```csharp
         //Finally Initialize AzureFunctions Executor Proxy here...
@@ -116,5 +116,5 @@ paradigm of AzureFunctions.
   * Therefore, rather than manually processing request as this prior example did, this approach 
     is different and leverages
 alot more OOTB code from **HotChocolate.AspNetCore**
-* The [HotChocolage Slack channel](https://join.slack.com/t/hotchocolategraphql/shared_invite/enQtNTA4NjA0ODYwOTQ0LTViMzA2MTM4OWYwYjIxYzViYmM0YmZhYjdiNzBjOTg2ZmU1YmMwNDZiYjUyZWZlMzNiMTk1OWUxNWZhMzQwY2Q)
+* The [HotChocolate Slack channel](https://join.slack.com/t/hotchocolategraphql/shared_invite/enQtNTA4NjA0ODYwOTQ0LTViMzA2MTM4OWYwYjIxYzViYmM0YmZhYjdiNzBjOTg2ZmU1YmMwNDZiYjUyZWZlMzNiMTk1OWUxNWZhMzQwY2Q)
 was helpful for searching and getting some feedback to iron this out quickly.
