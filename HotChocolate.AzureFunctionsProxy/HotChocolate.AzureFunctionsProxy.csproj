@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>11.0.0-preview.162</Version>
+    <Version>11.0.0</Version>
     <Authors>BBernard / CajunCoding</Authors>
     <Company>CajunCoding</Company>
-    <Description>This is a extension package for HotChocolate GraphQL framework to enable execution within AzureFunctions using the new v11 API.</Description>
+    <Description>This is a extension package for HotChocolate GraphQL framework to enable execution within AzureFunctions using the new v11 API. Provides very easy integration with Azure Functions with maximum support for out-of-the-box HotChocolate functionality.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
     <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless</PackageTags>
-    <PackageReleaseNotes>Currently compatible with v11 API pre-releases versions.  Limited testing but being actively used in projects in preparation for v11 official release.  Version number is synced with the pre-release version of HotCholate V11 API.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated this package to now be stable v11.0.0 (no longer preview).  Additional testing and use has showwn this to be stable and actively used in projects in preparation for v11 official release. Bumped HotChocolate version to v11-preview.176.</PackageReleaseNotes>
+    <Copyright>Copyright © 2020</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.162" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.176" />
   </ItemGroup>
 
 </Project>
