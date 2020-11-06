@@ -10,8 +10,11 @@
     <PackageProjectUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
     <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless</PackageTags>
-    <PackageReleaseNotes>Updated this package to now be stable v11.0.0 (no longer preview).  Additional testing and use has showwn this to be stable and actively used in projects in preparation for v11 official release. Bumped HotChocolate version to v11-preview.176.</PackageReleaseNotes>
+    <PackageReleaseNotes>Changed Repo &amp; Package names to eliminate conflict risks with the core HotChocolate packages.
+
+Updated this package to now be stable v11.0.0 (no longer preview).  Additional testing and use has showwn this to be stable and actively used in projects in preparation for v11 official release. Bumped HotChocolate version to v11-preview.176.</PackageReleaseNotes>
     <Copyright>Copyright © 2020</Copyright>
+    <PackageId>GraphQL.AzureFunctionsProxy</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-preview.176" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.0" />
   </ItemGroup>
 
 </Project>

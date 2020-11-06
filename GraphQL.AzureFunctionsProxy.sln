@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions", "PureCodeFirst-AzureFunctions-v11\StarWars-AzureFunctions.csproj", "{91E18C69-CD87-4305-B241-1DD04DB118F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotChocolate.AzureFunctionsProxy", "HotChocolate.AzureFunctionsProxy\HotChocolate.AzureFunctionsProxy.csproj", "{BEBF5D54-2ADC-4F2A-9E39-B2967B1D6335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.AzureFunctionsProxy", "GraphQL.AzureFunctionsProxy\GraphQL.AzureFunctionsProxy.csproj", "{EADE1DA0-404D-4504-86FD-B32BF70AF88F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{91E18C69-CD87-4305-B241-1DD04DB118F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E18C69-CD87-4305-B241-1DD04DB118F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E18C69-CD87-4305-B241-1DD04DB118F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BEBF5D54-2ADC-4F2A-9E39-B2967B1D6335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEBF5D54-2ADC-4F2A-9E39-B2967B1D6335}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEBF5D54-2ADC-4F2A-9E39-B2967B1D6335}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEBF5D54-2ADC-4F2A-9E39-B2967B1D6335}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
