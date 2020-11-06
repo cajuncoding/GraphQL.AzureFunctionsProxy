@@ -1,4 +1,7 @@
-# (Unofficial) HotChocolate.AzureFunctionsProxy for v11
+# GraphQL.AzureFunctionsProxy
+## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11.
+
+*Note: Updated Repo & Package names to eliminate conflicts with the core HotChocolate packages.*
 
 ## Overview
 This is a extension package for HotChocolate GraphQL framework to enable execution
@@ -11,7 +14,7 @@ This also includes a working example of the StarWars Project running as an Azure
 and modified only as needed to run as expected (with v11 API)!
 
 ### Nuget Package (.netcoreapp3.0)
-To use this as-is in your project, add the [HotChocolate.AzureFunctionsProxy](https://www.nuget.org/packages/HotChocolate.AzureFunctionsProxy) NuGet package to your project.
+To use this as-is in your project, add the [GraphQL.AzureFunctionsProxy](https://www.nuget.org/packages/GraphQL.AzureFunctionsProxy) NuGet package to your project.
  and wire up your Starup and AzureFunction endpoint as outlined below...
 
 
