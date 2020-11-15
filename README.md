@@ -13,7 +13,7 @@ This is **Unofficial** but working for most common use cases.
 This also includes a working example of the StarWars Project running as an Azure Function
 and modified only as needed to run as expected (with v11 API)!
 
-### Nuget Package (.netcoreapp3.0)
+### Nuget Package (>=.netcoreapp3.0)
 To use this as-is in your project, add the [GraphQL.AzureFunctionsProxy](https://www.nuget.org/packages/GraphQL.AzureFunctionsProxy) NuGet package to your project.
  and wire up your Starup and AzureFunction endpoint as outlined below...
 
