@@ -1,4 +1,4 @@
-﻿using HotChocolate.AspNetCore.Utilities;
+﻿using HotChocolate.AspNetCore.Serialization;
 using HotChocolate.AzureFunctionsProxy;
 using HotChocolate.Execution;
 using Microsoft.Extensions.DependencyInjection;

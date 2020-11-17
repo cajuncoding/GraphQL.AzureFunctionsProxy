@@ -5,10 +5,10 @@
     <RootNamespace>StarWars_AzureFunctions</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.0" />
-    <PackageReference Include="HotChocolate.Data" Version="11.0.0-rc.0" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.3" />
+    <PackageReference Include="HotChocolate.Data" Version="11.0.0-rc.3" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.9" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphQL.AzureFunctionsProxy\GraphQL.AzureFunctionsProxy.csproj" />

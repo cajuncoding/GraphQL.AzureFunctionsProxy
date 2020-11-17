@@ -1,5 +1,4 @@
 ﻿using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Utilities;
 using HotChocolate.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using HotChocolate.AspNetCore.Serialization;
 
 namespace HotChocolate.AzureFunctionsProxy
 {

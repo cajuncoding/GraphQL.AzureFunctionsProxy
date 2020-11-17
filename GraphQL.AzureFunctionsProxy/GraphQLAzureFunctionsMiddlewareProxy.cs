@@ -1,5 +1,4 @@
 ﻿using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Utilities;
 using HotChocolate.Execution;
 using HotChocolate.Language;
 using RequestDelegate = Microsoft.AspNetCore.Http.RequestDelegate;
@@ -10,6 +9,7 @@ using System.Net;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
+using HotChocolate.AspNetCore.Serialization;
 
 namespace HotChocolate.AzureFunctionsProxy
 {
