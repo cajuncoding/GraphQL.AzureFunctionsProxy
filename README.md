@@ -1,6 +1,8 @@
 # GraphQL.AzureFunctionsProxy
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11.
 
+**NOTE: Updated and released Nuget update to support namespace changes in v11 rc3!**
+
 *Note: Updated Repo & Package names to eliminate conflicts with the core HotChocolate packages.*
 
 ## Overview
