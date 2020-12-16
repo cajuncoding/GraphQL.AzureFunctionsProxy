@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.AzureFunctionsProxy", "GraphQL.AzureFunctionsProxy\GraphQL.AzureFunctionsProxy.csproj", "{EADE1DA0-404D-4504-86FD-B32BF70AF88F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL.AzureFunctionsProxy.Tests", "GraphQL.AzureFunctionsProxy.Tests\GraphQL.AzureFunctionsProxy.Tests.csproj", "{602DB716-B801-412D-971D-735BFE29076E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EADE1DA0-404D-4504-86FD-B32BF70AF88F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{602DB716-B801-412D-971D-735BFE29076E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{602DB716-B801-412D-971D-735BFE29076E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{602DB716-B801-412D-971D-735BFE29076E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{602DB716-B801-412D-971D-735BFE29076E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
