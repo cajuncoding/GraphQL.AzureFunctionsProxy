@@ -17,6 +17,8 @@ namespace GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework
         public static AzureFunctionTestContext CreateFunctionTestContext<TFunction>(FunctionsStartup functionStartupInstance)
             where TFunction: class
         {
+            //BBernard - this concept for Unit Testing the Pipeline + Dependencies for Azure Functions was inspired by the
+            //   blog article here: https://saebamini.com/integration-testing-in-azure-functions-with-dependency-injection/
             var host = new HostBuilder()
                 .ConfigureWebJobs(builder =>
                 {
@@ -31,6 +33,8 @@ namespace GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework
             return new AzureFunctionTestContext(host);
         }
 
+        //BBernard - this concept for initializing a ListLogger was inspired by the Microsoft walk-through
+        //  for testing Azure Functions here: https://docs.microsoft.com/en-us/azure/azure-functions/functions-test-a-function
         public static ILogger CreateLogger(LoggerTypes type = LoggerTypes.List)
         {
             var logger = type == LoggerTypes.List 

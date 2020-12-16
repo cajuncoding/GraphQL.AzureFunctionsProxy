@@ -28,7 +28,6 @@ namespace GraphQL.AzureFunctionsProxy.Tests
     [TestClass]
     public class GraphQLAzureFuncProxyHelloWorldTests : AzureFunctionGraphQLTestBase
     {
-
         [TestMethod]
         public async Task TestQueryNoSelections()
         {   //arrange
