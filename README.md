@@ -106,7 +106,7 @@ public class StarWarsFunctionEndpoint
                 req.HttpContext,
                 logger,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
         }
 ```
 
