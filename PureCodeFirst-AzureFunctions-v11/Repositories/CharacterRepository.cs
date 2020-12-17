@@ -10,8 +10,8 @@ namespace StarWars.Repositories
 {
     public class CharacterRepository : ICharacterRepository
     {
-        private Dictionary<int, ICharacter> _characters;
-        private Dictionary<int, Starship> _starships;
+        private readonly Dictionary<int, ICharacter> _characters;
+        private readonly Dictionary<int, Starship> _starships;
 
         public CharacterRepository()
         {

@@ -73,7 +73,7 @@ namespace GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework
                 //Initialize a valid Stream for the Request (must be tracked & Disposed of!)
                 var requestBodyBytes = Encoding.UTF8.GetBytes(requestBody);
                 httpRequest.Body = new MemoryStream(requestBodyBytes);
-                httpRequest.ContentType = "application/json";
+                httpRequest.ContentType = requestContentType;
                 httpRequest.ContentLength = requestBodyBytes.Length;
             }
 
@@ -91,8 +91,7 @@ namespace GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework
 
         public string ReadResponseContentAsString()
         {
-            var responseMemoryStream = HttpContext?.Response?.Body as MemoryStream;
-            if (responseMemoryStream == null) 
+            if (!(HttpContext?.Response?.Body is MemoryStream responseMemoryStream)) 
                 return null;
 
             var responseContent = Encoding.UTF8.GetString(responseMemoryStream.ToArray());
