@@ -44,7 +44,7 @@ namespace HotChocolate.AzureFunctionsProxy
 
                 //Use the Middleware Proxy to Invoke the pre-configured pipeline for Http POST & GET processing...
                 var httpMiddlewareProxy = this.AzureFunctionsMiddlewareProxy;
-                await httpMiddlewareProxy.InvokeAsync(httpContext);
+                await httpMiddlewareProxy.InvokeAsync(httpContext).ConfigureAwait(false);
 
             }
             //NOTE: We Implement error handling that matches the Existing HttpPostMiddleware, to ensure that all code
@@ -56,7 +56,7 @@ namespace HotChocolate.AzureFunctionsProxy
 
                 // A GraphQL request exception is thrown if the HTTP request body couldn't be parsed.
                 // In this case we will return HTTP status code 400 and return a GraphQL error result.
-                IErrorHandler errorHandler = await this.AzureFunctionsMiddlewareProxy.GetErrorHandlerAsync(cancellationToken);
+                IErrorHandler errorHandler = await this.AzureFunctionsMiddlewareProxy.GetErrorHandlerAsync(cancellationToken).ConfigureAwait(false);
                 IQueryResult errorResult = QueryResultBuilder.CreateError(errorHandler.Handle(ex.Errors));
                
                 await HandleGraphQLErrorResponseAsync(httpContext, HttpStatusCode.BadRequest, errorResult);
@@ -68,7 +68,7 @@ namespace HotChocolate.AzureFunctionsProxy
 
                 // An unknown and unexpected GraphQL request exception was encountered.
                 // In this case we will return HTTP status code 500 and return a GraphQL error result.
-                IErrorHandler errorHandler = await this.AzureFunctionsMiddlewareProxy.GetErrorHandlerAsync(cancellationToken);
+                IErrorHandler errorHandler = await this.AzureFunctionsMiddlewareProxy.GetErrorHandlerAsync(cancellationToken).ConfigureAwait(false);
                 IError error = errorHandler.CreateUnexpectedError(exc).Build();
                 IQueryResult errorResult = QueryResultBuilder.CreateError(error);
                 
@@ -76,7 +76,7 @@ namespace HotChocolate.AzureFunctionsProxy
                     ? HttpStatusCode.BadRequest 
                     : HttpStatusCode.InternalServerError;
 
-                await HandleGraphQLErrorResponseAsync(httpContext, statusCode, errorResult);
+                await HandleGraphQLErrorResponseAsync(httpContext, statusCode, errorResult).ConfigureAwait(false);
             }
 
             //Safely resolve the .Net Core request with Empty Result because the Response has already been handled!
@@ -98,7 +98,7 @@ namespace HotChocolate.AzureFunctionsProxy
                 errorResult, 
                 statusCode, 
                 httpContext.RequestAborted
-            );
+            ).ConfigureAwait(false);
         }
 
 

@@ -39,7 +39,7 @@ namespace StarWars.AzureFunctions
                 req.HttpContext,
                 logger,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
         }
     }
 }

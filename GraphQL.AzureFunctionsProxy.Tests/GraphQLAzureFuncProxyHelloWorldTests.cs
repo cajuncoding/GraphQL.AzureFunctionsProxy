@@ -39,7 +39,9 @@ namespace GraphQL.AzureFunctionsProxy.Tests
             var helloWorldFunction = functionTestCtx.ResolveFunctionWithDependencies<HelloWorldFunction>();
 
             //act
-            var functionResult = await helloWorldFunction.Run(httpRequest, functionTestCtx.Logger, CancellationToken.None);
+            var functionResult = await helloWorldFunction
+                .Run(httpRequest, functionTestCtx.Logger, CancellationToken.None)
+                .ConfigureAwait(false);
             var graphQLResult = functionTestCtx.ReadResponseJson<GraphQLQueryResult>();
 
             //assert
@@ -62,7 +64,9 @@ namespace GraphQL.AzureFunctionsProxy.Tests
             var helloWorldFunction = functionTestCtx.ResolveFunctionWithDependencies<HelloWorldFunction>();
 
             //act
-            var functionResult = await helloWorldFunction.Run(httpRequest, functionTestCtx.Logger, CancellationToken.None);
+            var functionResult = await helloWorldFunction
+                .Run(httpRequest, functionTestCtx.Logger, CancellationToken.None)
+                .ConfigureAwait(false);
             var graphQLResult = functionTestCtx.ReadResponseJson<GraphQLQueryResult>();
 
             //assert
@@ -91,7 +95,9 @@ namespace GraphQL.AzureFunctionsProxy.Tests
             var helloWorldFunction = functionTestCtx.ResolveFunctionWithDependencies<HelloWorldFunction>();
 
             //act
-            var functionResult = await helloWorldFunction.Run(httpRequest, functionTestCtx.Logger, CancellationToken.None);
+            var functionResult = await helloWorldFunction
+                .Run(httpRequest, functionTestCtx.Logger, CancellationToken.None)
+                .ConfigureAwait(false);
             var graphQLResult = functionTestCtx.ReadResponseJson<GraphQLQueryResult>();
 
             //assert

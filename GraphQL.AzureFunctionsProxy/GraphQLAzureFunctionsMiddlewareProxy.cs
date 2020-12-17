@@ -67,7 +67,7 @@ namespace HotChocolate.AzureFunctionsProxy
             ////  so that it is the first to execute, and then fallback to Http Get if appropriate, finally throw
             ////  an exception if neither are supported by the current request.
             this.MiddlewareProxy = new HttpPostMiddleware(
-                async (httpContext) => await httpGetMiddlewareShim.InvokeAsync(httpContext),
+                async (httpContext) => await httpGetMiddlewareShim.InvokeAsync(httpContext).ConfigureAwait(false),
                 this.ExecutorResolver,
                 this.ResultSerializer,
                 this.RequestParser,
@@ -83,7 +83,7 @@ namespace HotChocolate.AzureFunctionsProxy
         /// <returns></returns>
         public virtual async Task InvokeAsync(HttpContext httpContext)
         {
-            await this.MiddlewareProxy.InvokeAsync(httpContext);
+            await this.MiddlewareProxy.InvokeAsync(httpContext).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace HotChocolate.AzureFunctionsProxy
         /// <returns></returns>
         public virtual async Task<IErrorHandler> GetErrorHandlerAsync(CancellationToken cancellationToken)
         {
-            IRequestExecutor requestExecutor = await this.MiddlewareProxy.GetExecutorAsync(cancellationToken);
+            IRequestExecutor requestExecutor = await this.MiddlewareProxy.GetExecutorAsync(cancellationToken).ConfigureAwait(false);
 
             //Unable to use the HotChocolate Helper method GetErrorHandler() from RequestExecutorExtensions
             //  because it is marked as internal only, however, we can directly use the DI Provider in the same way.
@@ -128,7 +128,7 @@ namespace HotChocolate.AzureFunctionsProxy
             response.ContentType = resultSerializer.GetContentType(result);
             response.StatusCode = (int)(statusCode ?? resultSerializer.GetStatusCode(result));
 
-            await resultSerializer.SerializeAsync(result, response.Body, cancellationToken);
+            await resultSerializer.SerializeAsync(result, response.Body, cancellationToken).ConfigureAwait(false);
         }
 
     }
