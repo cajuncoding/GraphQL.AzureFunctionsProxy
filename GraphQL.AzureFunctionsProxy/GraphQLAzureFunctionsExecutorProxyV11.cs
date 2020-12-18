@@ -37,6 +37,22 @@ namespace HotChocolate.AzureFunctionsProxy
             );
         }
 
+        /// <summary>
+        /// Execute the current HttpContext provided using HotChocolate GraphQL and the currently configured pipeline.
+        /// ALL parsing, and processing of the Query of the request will be handled by existing HotChoclate HttpPost & HttpGet
+        /// middleware, this class will only proxy the context into HC for execution, and handle unexpected errors.
+        /// NOTE: An EmptyResult() response is returned because that is what must be returned by the AzureFunction; because HotChocolate
+        ///     has already processed the request and started the response (e.g. StatusCode will be set by HC) an EmptyResult() response
+        ///     will prevent the Azure Functions framework from attempting to set it again resulting in a a Host error/crash. 
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <param name="logger"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>
+        /// Returns an EmptyResult() response because HotChocolate has already processed the request and started the response
+        /// (e.g. StatusCode will be set by HC) and an EmptyResult() response will prevent the Azure Functions framework from
+        /// attempting to set it again resulting in a a Host error/crash.
+        /// </returns>
         public async Task<IActionResult> ExecuteFunctionsQueryAsync(HttpContext httpContext, ILogger logger, CancellationToken cancellationToken)
         {
             try
@@ -80,6 +96,9 @@ namespace HotChocolate.AzureFunctionsProxy
             }
 
             //Safely resolve the .Net Core request with Empty Result because the Response has already been handled!
+            //NOTE: We Must return EmptyResult() so that No Action is taken on the Response or else an error will occur
+            //      since HotChocolate has ALREADY started (e.g. processed) the response, and the Status Code is already set!
+            //For More Info See: https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.emptyresult?view=aspnetcore-5.0
             return new EmptyResult();
         }
 
