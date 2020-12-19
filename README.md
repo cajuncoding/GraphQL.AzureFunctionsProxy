@@ -2,7 +2,9 @@
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11.
 
 **Update Notes:**
-- Updated to v11.0.1.1 due to critical fixes in HC v11.0.1 that resolve an issue in HC core that had broken Interfaces (which impacted the accompanying Star Wars Demo)
+- Added ConfigureAwait(false) to all awaits for performance.
+- Bumped to HC v11.0.4
+- Updated to HC v11.0.1.1 due to critical fixes in HC v11.0.1 that resolve an issue in HC core that had broken Interfaces (which impacted the accompanying Star Wars Demo)
 - Updated and released Nuget update to support namespace changes in v11 rc3!
 - Updated Repo & Package names to eliminate conflicts with the core HotChocolate packages.
 
