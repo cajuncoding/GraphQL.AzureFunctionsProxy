@@ -26,7 +26,7 @@ To use this as-is in your project, add the [GraphQL.AzureFunctionsProxy](https:/
 
 
 ## Demo Site (Star Wars)
-This project contains a clone of the HotChocolate GraphQL *Star Wars* example project (Pure Code First version)
+This project contains a clone of the HotChocolate GraphQL *Star Wars* example project (Annotation based version; Pure Code First)
 running as an AzureFunctions app and mildly updated to use the new v11 API. 
 
 HotChocolate has changed the Execution pipeline for v11 API in many ways, and existing AzureFunctions
@@ -34,9 +34,11 @@ implementation samples don't account for various common use cases like BatchRequ
 
 ### NOTES: 
 1. **NOTE:** According to the HotChocolate team on Slack, they will provide an Official AzureFunctions 
-middleware as part of v11 (eventually). :-)
-2. **WARNING: Limited Testing has been done on this but I am actively using it on projects, 
-and will update with any findings.**
+middleware as part of v11 (eventually). However it will be based on the cutting edge version of 
+Azure Functions that enable running/initializing a project exactly like a normal AspNerCore app. 
+So this library may still help address gaps in existing Azure Function projects :-)
+2. **NOTE: Moderate Testing has been done on this and we are actively using it on projects, 
+and will update with any findings; we have not completed exhaustive testing of all HotChocolate functionality.**
 
 ## Goals
 
@@ -51,15 +53,16 @@ C# bindings, DI, and current Function invocation are maintained.
 
 ## Implementation:
 This approach uses a "Middleware Proxy" pattern whereby we provide the functionality of the 
-HotChocolate HTTP middleware via a proxy class that can be injected into the Azure Function,
-but otherwise do not change the existing AzureFunctions invocation pipeline.
+existing HotChocolate HTTP middleware via a proxy class that can be injected into the Azure Function,
+but otherwise do not change the existing AzureFunctions invocation pipeline or the HotChocolate pipeline
+as it is configured in the application startup class.
 
 This Proxy exposes an "executor" interface that can process the HttpContext in an AzureFunction.
 However, any pre/post logic could be added before/after the invocation of the executor proxy 
 *IGraphQLAzureFunctionsExecutorProxy*.
 
 This proxy is setup by internally configuring a Middleware Proxy that is an encapsulation of the 
-existing *HttpPostMiddleware* & *HttpGetMiddleware* configured as a simple pipeline for processing POST 
+existing HotChocolate *HttpPostMiddleware* & *HttpGetMiddleware* configured as a simple pipeline for processing POST 
 requests first and then defaulting back to GET requests, and erroring out if neither are able to 
 handle the request.
 
