@@ -28,8 +28,8 @@ Prior Releases Notes:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.4" />
-    <PackageReference Include="HotChocolate.Data" Version="11.0.4" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.7" />
+    <PackageReference Include="HotChocolate.Data" Version="11.0.7" />
   </ItemGroup>
 
 </Project>

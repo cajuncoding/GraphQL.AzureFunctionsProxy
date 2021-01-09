@@ -1,25 +1,9 @@
 using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Functions.Tests;
 using GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework;
-using GraphQL.AzureFunctionsProxy.Tests.GraphQL;
-using HotChocolate.AspNetCore.Serialization;
-using HotChocolate.AzureFunctionsProxy;
-using HotChocolate.Execution;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StarWars.AzureFunctions;
 

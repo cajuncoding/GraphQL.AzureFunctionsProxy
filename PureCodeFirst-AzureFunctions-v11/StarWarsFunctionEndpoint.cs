@@ -28,7 +28,7 @@ namespace StarWars.AzureFunctions
 
         [FunctionName(nameof(StarWarsFunctionEndpoint))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "graphql")] HttpRequest req,
             ILogger logger,
             CancellationToken cancellationToken
         )
