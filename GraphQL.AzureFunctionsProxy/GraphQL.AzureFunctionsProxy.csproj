@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
     <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless</PackageTags>
     <PackageReleaseNotes>- Added support for download of the Schema (?SDL)
-- Added support for functioning Playground (when configured correctly iin the AzureFunction HttpTrigger)
+- Added support for functioning Playground (when configured correctly in the Azure Function HttpTrigger &amp; Route Binding)
 - Maintained current version compatibility with HC v11.0.4
 
 Prior Releases Notes:

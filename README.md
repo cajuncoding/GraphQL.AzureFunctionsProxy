@@ -2,6 +2,12 @@
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11.
 
 **Update Notes:**
+- Added support for ?SDL download of the Schema (?SDL)
+- Added support for Functioning Playground (when configured correctly iin the AzureFunction HttpTrigger route binding & new path option).
+- Reduced the number of awaits used in the Middleware proxy for performance.
+- Maintained compatibility with v11.0.4.
+
+Prior Release Notes:
 - Added ConfigureAwait(false) to all awaits for performance.
 - Bumped to HC v11.0.4
 - Updated to HC v11.0.1.1 due to critical fixes in HC v11.0.1 that resolve an issue in HC core that had broken Interfaces (which impacted the accompanying Star Wars Demo)
@@ -70,10 +76,22 @@ handle the request.
 
 ### Startup Configuration
 1. The following Middleware initializer must be added into a valid AzureFunctions Configuration 'Startup.cs'
-  * All other elements of HotChocolate initialization are the same using the v11 API. 
+  - All other elements of HotChocolate initialization are the same using the v11 API. 
 ```csharp
         //Finally Initialize AzureFunctions Executor Proxy here...
         services.AddAzureFunctionsGraphQL();
+```
+
+  - Or to enable/disable new features for Schema Download (?SDL) or Playground (DEFAULT is enabled):
+```csharp
+        //Finally Initialize AzureFunctions Executor Proxy here...
+        services.AddAzureFunctionsGraphQL((options) =>
+        {
+            options.AzureFunctionsRoutePath = "/api/graphql"; //Default value is already `/api/graphql`
+            options.EnableSchemaDefinitionDownload = true; //Default is already Enabled (true)
+            options.EnablePlaygroundWebApp = true; //Default is already Enabled (true)
+            options.EnableGETRequests = true; //Default is already Enabled (true)
+        });
 ```
 
   * Note: The namespace for this new middleware and proxy classes as needed is:
@@ -100,7 +118,8 @@ public class StarWarsFunctionEndpoint
 ```csharp
         [FunctionName(nameof(StarWarsFunctionEndpoint))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql")] HttpRequest req,
+            //NOTE: The Route must be configured to match wildcard path for the Playground to function properly.
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql/{*path}")] HttpRequest req,
             ILogger logger,
             CancellationToken cancellationToken
         )
@@ -115,7 +134,48 @@ public class StarWarsFunctionEndpoint
         }
 ```
 
+### Enabling the Playground from AzureFunctions
+1. To enable the Playground the Azure Function must be configured properly to serve all Web Assets dynamically
+for various paths, and the Middleware must be told what the AzureFunction path is via the Options configuration.
+
+   - To do this, the HttpTrigger must be configured with wildcard matching on the path so that the Function will be bound
+to all paths for processing (e.g. CSS, JavaScript, Manifest.json asset requests):
+
+   - Take note of the ***/{\*path}*** component of the Route binding!
+```csharp
+        //NOTE: The Route must be configured to match wildcard path for the Playground to function properly.
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql/{*path}")] HttpRequest req,
+```
+
+2. If you use the standard AzureFunctions configuration and map your function to Route to `graphql/{*path}` then you are done.
+However if you have changed either the default Azure Function prefix (which is `/api/`) or use a different Route binding, then youTo enable the Playground the Azure Function must be configured properly to serve all Web Assets dynamically
+need to explicitly tell the AzureFunctionsProxy what the expected base Url path is, so that the HC Middleware will successfully
+match the path and serve resources.
+   - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration as follows:
+   - Assuming the following then the configuration would be as follows:
+     - You have changed the default Azure Functions prefix from `api` to `my-api` in the `host.json` file.
+     - You have added a version `v1` in front of the Route binding and renamed it so your Route binding is now: `Route = "v1/graphql-service/{*path}"
+     - *NOTE: you MUST still use the wildcard path matching for Playground to function properly.*
+```csharp
+        //Finally Initialize AzureFunctions Executor Proxy here...
+        services.AddAzureFunctionsGraphQL((options) =>
+        {
+            //When accessing the GraphQL via AzureFunctions this is the path that all Urls will be prefixed with
+            //  as configured in the AzureFunction host.json combined with the HttpTrigger Route binding.
+            options.AzureFunctionsRoutePath = "/api/v1/graphql-service";
+        });
+```
+
+
 ## Disclaimers:
+* PlayGround & Schema Download Functionality:
+  - There is one key reason that Playground and Schema Download works -- because the DEFAULT values for the GraphQL Options are to Enable them!  
+  - At this time the AzureFunctionsProxy can enablee/disable the middleware by either wiring up the Middleware or not.
+  - But, the HC middleware checks for GraphQL configured options that are set at Configuration build time to see if these are enable/disabled, 
+and that is stored on *Endpoint Metadata* that is not accessible (to my knowledge so far) in the Azure Function
+  - This is because in Azure Functions (V2) we do not control the routing configuration at the same level of control that 
+an Asp.Net Core application has.
+  - However, since the HC defaults are to be `Enabled = true` then it's a non-issue!
 * Subscriptsion were disabled in the example project due to unknown supportability in a 
 serverless environment. 
   * The StarWars example uses in-memory subscriptions which are incongruent with the serverless

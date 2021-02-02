@@ -6,9 +6,9 @@ namespace HotChocolate.AzureFunctionsProxy
 {
     public class GraphQLAzureFunctionsConfigOptions
     {
-        public string AzureFunctionsGraphQLRoutePath { get; set; } = "/api/graphql";
-        public bool EnableSchemaDefinitionMiddleware { get; set; } = true;
-        public bool EnablePlayground { get; set; } = true;
-        public bool EnableGetRequestMiddleware { get; set; } = true;
+        public string AzureFunctionsRoutePath { get; set; } = "/api/graphql";
+        public bool EnableSchemaDefinitionDownload { get; set; } = true;
+        public bool EnablePlaygroundWebApp { get; set; } = true;
+        public bool EnableGETRequests { get; set; } = true;
     }
 }

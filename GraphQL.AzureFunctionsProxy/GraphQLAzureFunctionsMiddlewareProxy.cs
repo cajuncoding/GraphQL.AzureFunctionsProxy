@@ -63,7 +63,7 @@ namespace HotChocolate.AzureFunctionsProxy
             this.FileProvider = GraphQLInitHelpers.CreateEmbeddedFileProvider();
 
             //Set the RoutePath; a dependency of all dynamic file serving Middleware!
-            this.RoutePath = new PathString(Options.AzureFunctionsGraphQLRoutePath);
+            this.RoutePath = new PathString(Options.AzureFunctionsRoutePath);
             
             //Initialize the Primary Middleware (POST) as needed for references to GetExecutorAsync() for Error Handling, etc....
             //NOTE: This will also return the Middleware to be used as the primary reference.
@@ -97,7 +97,7 @@ namespace HotChocolate.AzureFunctionsProxy
             //          - ToolStaticFileMiddleware
             //          - HttpGetMiddleware
 
-            if (Options.EnableGetRequestMiddleware)
+            if (Options.EnableGETRequests)
             {
                 var httpGetMiddlewareShim = new HttpGetMiddleware(
                     this.MiddlewareProxyDelegate,
@@ -109,7 +109,7 @@ namespace HotChocolate.AzureFunctionsProxy
                 this.MiddlewareProxyDelegate = (httpContext) => httpGetMiddlewareShim.InvokeAsync(httpContext);
             }
 
-            if (Options.EnablePlayground)
+            if (Options.EnablePlaygroundWebApp)
             {
                 var toolStaticFileMiddlewareShim = new ToolStaticFileMiddleware(
                     this.MiddlewareProxyDelegate,
@@ -135,7 +135,7 @@ namespace HotChocolate.AzureFunctionsProxy
                 this.MiddlewareProxyDelegate = (httpContext) => toolDefaultFileMiddlewareShim.Invoke(httpContext);
             }
 
-            if (Options.EnableSchemaDefinitionMiddleware)
+            if (Options.EnableSchemaDefinitionDownload)
             {
                 var httpGetSchemaMiddlewareShim = new HttpGetSchemaMiddleware(
                     this.MiddlewareProxyDelegate,

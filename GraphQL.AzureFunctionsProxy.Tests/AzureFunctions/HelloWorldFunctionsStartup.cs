@@ -33,7 +33,7 @@ namespace GraphQL.AzureFunctionsProxy.Tests
             //TODO: Test multiple SchemaNames...
             services.AddAzureFunctionsGraphQL((options) =>
             {
-                options.AzureFunctionsGraphQLRoutePath = "/api/graphql";
+                options.AzureFunctionsRoutePath = "/api/graphql";
             });
         }
     }
