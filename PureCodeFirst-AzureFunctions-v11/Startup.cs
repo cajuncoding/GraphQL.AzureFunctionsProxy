@@ -53,7 +53,13 @@ namespace StarWars
             //Finally Initialize AzureFunctions Executor Proxy here...
             //You man Provide a specific SchemaName for multiple Functions (e.g. endpoints).
             //TODO: Test multiple SchemaNames...
-            services.AddAzureFunctionsGraphQL();
+            services.AddAzureFunctionsGraphQL((options) =>
+            {
+                //The Path must match the exact routing path that the Azure Function HttpTrigger is bound to.
+                //NOTE: ThIs includes the /api/ prefix unless it was specifically removed or changed in the host.json file.
+                //NOTE: THe default value is `/api/graphql`, but it's being done here to illustrate how to set the value.
+                options.AzureFunctionsGraphQLRoutePath = "/api/graphql";
+            });
         }
     }
 }

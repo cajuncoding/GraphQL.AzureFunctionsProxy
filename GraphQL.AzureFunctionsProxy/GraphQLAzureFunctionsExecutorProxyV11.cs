@@ -23,17 +23,19 @@ namespace HotChocolate.AzureFunctionsProxy
         protected GraphQLAzureFunctionsMiddlewareProxy AzureFunctionsMiddlewareProxy { get; }
 
         public GraphQLAzureFunctionsExecutorProxyV11(
-            IRequestExecutorResolver graphqlExecutorResolver,
-            IHttpResultSerializer graphqlResultSerializer,
-            IHttpRequestParser graphqlRequestParser,
-            NameString schemaName = default
+            IRequestExecutorResolver graphQLExecutorResolver,
+            IHttpResultSerializer graphQLResultSerializer,
+            IHttpRequestParser graphQLRequestParser,
+            NameString schemaName = default,
+            GraphQLAzureFunctionsConfigOptions options = null
         )
         {
             this.AzureFunctionsMiddlewareProxy = new GraphQLAzureFunctionsMiddlewareProxy(
-                graphqlExecutorResolver,
-                graphqlResultSerializer,
-                graphqlRequestParser,
-                schemaName
+                graphQLExecutorResolver,
+                graphQLResultSerializer,
+                graphQLRequestParser,
+                schemaName,
+                options
             );
         }
 

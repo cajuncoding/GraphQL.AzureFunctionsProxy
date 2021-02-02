@@ -35,18 +35,30 @@ namespace GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework
             return function;
         }
 
+        public HttpRequest CreateHttpGetRequest(string path, string contentType, List<KeyValuePair<string, string>> queryStringValues = null)
+        {
+            var httpRequest = CreateHttpRequest(
+                HttpMethod.Get, 
+                requestPath: path, 
+                requestContentType: contentType, 
+                queryStringValues: queryStringValues
+            );
+            return httpRequest;
+        }
+
         public HttpRequest CreateHttpJsonPostRequest<TRequestPayload>(
             TRequestPayload requestPayload
         )
         {
             var requestBody = JsonConvert.SerializeObject(requestPayload);
-            var httpRequest = CreateHttpRequest(HttpMethod.Post, requestBody, "application/json");
+            var httpRequest = CreateHttpRequest(HttpMethod.Post, requestBody: requestBody, requestContentType: "application/json");
             return httpRequest;
         }
 
         public HttpRequest CreateHttpRequest(
             HttpMethod httpMethod = null,
             string requestBody = null,
+            string requestPath = "",
             string requestContentType = "application/json",
             List<KeyValuePair<string, string>> queryStringValues = null
         )
@@ -60,6 +72,7 @@ namespace GraphQL.AzureFunctionsProxy.Tests.AzureFunctionsTestFramework
             //Initialize the Http Request
             //NOTE: Default Body is a NullStream...which ignores all Reads/Writes.
             var httpRequest = this.HttpContext.Request;
+            httpRequest.Path = new PathString(requestPath);
             httpRequest.Method = httpMethod?.Method ?? HttpMethod.Get.Method;
             httpRequest.Query = CreateQueryCollection(queryStringValues);
 

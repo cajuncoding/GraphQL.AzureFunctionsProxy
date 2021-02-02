@@ -31,7 +31,10 @@ namespace GraphQL.AzureFunctionsProxy.Tests
             //Finally Initialize AzureFunctions Executor Proxy here...
             //You man Provide a specific SchemaName for multiple Functions (e.g. endpoints).
             //TODO: Test multiple SchemaNames...
-            services.AddAzureFunctionsGraphQL();
+            services.AddAzureFunctionsGraphQL((options) =>
+            {
+                options.AzureFunctionsGraphQLRoutePath = "/api/graphql";
+            });
         }
     }
 }

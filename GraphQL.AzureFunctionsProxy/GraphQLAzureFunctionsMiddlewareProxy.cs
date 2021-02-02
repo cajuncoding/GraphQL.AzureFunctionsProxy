@@ -10,6 +10,7 @@ using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using HotChocolate.AspNetCore.Serialization;
+using Microsoft.Extensions.FileProviders;
 
 namespace HotChocolate.AzureFunctionsProxy
 {
@@ -23,56 +24,142 @@ namespace HotChocolate.AzureFunctionsProxy
     {
         public const string GRAPHQL_MIDDLEWARE_INIT_ERROR = "Ensure that the services.AddGraphQLServer() has been initialized first.";
 
+        protected GraphQLAzureFunctionsConfigOptions Options { get; }
         protected IRequestExecutorResolver ExecutorResolver { get; }
         protected IHttpResultSerializer ResultSerializer { get; }
         protected IHttpRequestParser RequestParser { get; }
+        protected IFileProvider FileProvider { get; }
+        protected PathString RoutePath { get; }
         protected NameString SchemaName { get; }
-        protected HttpPostMiddleware MiddlewareProxy { get; }
+
+        protected MiddlewareBase PrimaryMiddleware { get; }
+        protected RequestDelegate MiddlewareProxyDelegate { get; set; }
 
         public GraphQLAzureFunctionsMiddlewareProxy(
-            IRequestExecutorResolver graphqlExecutorResolver,
-            IHttpResultSerializer graphqlResultSerializer,
-            IHttpRequestParser graphqlRequestParser,
-            NameString schemaName = default
+            IRequestExecutorResolver graphQLExecutorResolver,
+            IHttpResultSerializer graphQLResultSerializer,
+            IHttpRequestParser graphQLRequestParser,
+            NameString schemaName = default,
+            GraphQLAzureFunctionsConfigOptions options = null
         )
         {
             //We support multiple schemas by allowing a name to be specified, but default to DefaultName if not.
             this.SchemaName = schemaName.HasValue ? schemaName : Schema.DefaultName;
 
+            //Initialize the Server Options with defaults!
+            this.Options = options ?? new GraphQLAzureFunctionsConfigOptions();
+
             //Validate Dependencies...
-            this.ExecutorResolver = graphqlExecutorResolver ??
-                throw new ArgumentNullException(nameof(graphqlExecutorResolver), GRAPHQL_MIDDLEWARE_INIT_ERROR);
+            this.ExecutorResolver = graphQLExecutorResolver ??
+                throw new ArgumentNullException(nameof(graphQLExecutorResolver), GRAPHQL_MIDDLEWARE_INIT_ERROR);
 
-            this.ResultSerializer = graphqlResultSerializer ??
-                throw new ArgumentNullException(nameof(graphqlResultSerializer), GRAPHQL_MIDDLEWARE_INIT_ERROR);
+            this.ResultSerializer = graphQLResultSerializer ??
+                throw new ArgumentNullException(nameof(graphQLResultSerializer), GRAPHQL_MIDDLEWARE_INIT_ERROR);
 
-            this.RequestParser = graphqlRequestParser ??
-                throw new ArgumentNullException(nameof(graphqlRequestParser), GRAPHQL_MIDDLEWARE_INIT_ERROR);
+            this.RequestParser = graphQLRequestParser ??
+                throw new ArgumentNullException(nameof(graphQLRequestParser), GRAPHQL_MIDDLEWARE_INIT_ERROR);
 
+            //The File Provider is initialized internally as an EmbeddedFileProvider
+            this.FileProvider = GraphQLInitHelpers.CreateEmbeddedFileProvider();
+
+            //Set the RoutePath; a dependency of all dynamic file serving Middleware!
+            this.RoutePath = new PathString(Options.AzureFunctionsGraphQLRoutePath);
+            
+            //Initialize the Primary Middleware (POST) as needed for references to GetExecutorAsync() for Error Handling, etc....
+            //NOTE: This will also return the Middleware to be used as the primary reference.
+            this.PrimaryMiddleware = ConfigureMiddlewareChainOfResponsibility();
+        }
+
+        private MiddlewareBase ConfigureMiddlewareChainOfResponsibility()
+        {
+            //*********************************************
+            //Manually Build the Proxy Pipeline...
+            //*********************************************
+            this.MiddlewareProxyDelegate = (httpContext) => throw new HttpRequestException(
+                "GraphQL was unable to process the request, ensure that an Http POST or GET GraphQL request was sent as well-formed Json."
+            );
 
             //BBernard - Initialize the middleware proxy and pipeline with support for both Http GET & POST processing...
-            //NOTE: Middleware uses the Pipeline Pattern (similar to Chain Of Responsibility), therefore
-            //  we adapt that here to manually build up the two key middleware handlers for Http Get & Http Post processing.
-            var httpGetMiddlewareShim = new HttpGetMiddleware(
-                (httpContext) => throw new HttpRequestException(
-                    "GraphQL was unable to process the request, ensure that an Http POST or GET GraphQL request was sent as well-formed Json."
-                ),
-                this.ExecutorResolver,
-                this.ResultSerializer,
-                this.RequestParser,
-                this.SchemaName
-            );
+            //NOTE: Middleware uses the Pipeline Pattern (e.g. Chain Of Responsibility), therefore
+            //  we adapt that here to manually build up the key middleware handlers for Http Get & Http Post processing.
+            //NOTE: Other key features such as Schema download and the Playground (Banana Cake Pop Dynamic UI) are all
+            //      delivered by other Middleware also.
+            //NOTE: Middleware MUST be configured in the correct order of dependency to support the functionality and
+            //          the chain of responsibility is executed inside-out; or last registered middleware will run first and
+            //          the first one registered will run last (if not already previously handled).
+            //      Therefore we MUST register the middleware in reverse order of how the HC Core code does in the
+            //          `public static GraphQLEndpointConventionBuilder MapGraphQL()` builder logic.
+            //      Proper Execution Order must be:
+            //          - HttpPostMiddleware
+            //          - HttpGetSchemaMiddleware
+            //          - ToolDefaultFileMiddleware
+            //          - ToolOptionsFileMiddleware
+            //          - ToolStaticFileMiddleware
+            //          - HttpGetMiddleware
+
+            if (Options.EnableGetRequestMiddleware)
+            {
+                var httpGetMiddlewareShim = new HttpGetMiddleware(
+                    this.MiddlewareProxyDelegate,
+                    this.ExecutorResolver,
+                    this.ResultSerializer,
+                    this.RequestParser,
+                    this.SchemaName
+                );
+                this.MiddlewareProxyDelegate = (httpContext) => httpGetMiddlewareShim.InvokeAsync(httpContext);
+            }
+
+            if (Options.EnablePlayground)
+            {
+                var toolStaticFileMiddlewareShim = new ToolStaticFileMiddleware(
+                    this.MiddlewareProxyDelegate,
+                    this.FileProvider,
+                    this.RoutePath
+                );
+                this.MiddlewareProxyDelegate = (httpContext) => toolStaticFileMiddlewareShim.Invoke(httpContext);
+
+                var toolOptionsFileMiddlewareShim = new ToolOptionsFileMiddleware(
+                    this.MiddlewareProxyDelegate,
+                    this.ExecutorResolver,
+                    this.ResultSerializer,
+                    this.SchemaName,
+                    this.RoutePath
+                );
+                this.MiddlewareProxyDelegate = (httpContext) => toolOptionsFileMiddlewareShim.Invoke(httpContext);
+
+                var toolDefaultFileMiddlewareShim = new ToolDefaultFileMiddleware(
+                    this.MiddlewareProxyDelegate,
+                    this.FileProvider,
+                    this.RoutePath
+                );
+                this.MiddlewareProxyDelegate = (httpContext) => toolDefaultFileMiddlewareShim.Invoke(httpContext);
+            }
+
+            if (Options.EnableSchemaDefinitionMiddleware)
+            {
+                var httpGetSchemaMiddlewareShim = new HttpGetSchemaMiddleware(
+                    this.MiddlewareProxyDelegate,
+                    this.ExecutorResolver,
+                    this.ResultSerializer,
+                    this.SchemaName
+                );
+                this.MiddlewareProxyDelegate = (httpContext) => httpGetSchemaMiddlewareShim.InvokeAsync(httpContext);
+            }
 
             ////NOTE: The normal use case for GraphQL is POST'ing of the query so we initialize it last in the chain/pipeline
             ////  so that it is the first to execute, and then fallback to Http Get if appropriate, finally throw
             ////  an exception if neither are supported by the current request.
-            this.MiddlewareProxy = new HttpPostMiddleware(
-                async (httpContext) => await httpGetMiddlewareShim.InvokeAsync(httpContext).ConfigureAwait(false),
+            var httpPostMiddlewareShim = new HttpPostMiddleware(
+                this.MiddlewareProxyDelegate,
                 this.ExecutorResolver,
                 this.ResultSerializer,
                 this.RequestParser,
                 this.SchemaName
             );
+            this.MiddlewareProxyDelegate = (httpContext) => httpPostMiddlewareShim.InvokeAsync(httpContext);
+
+            //RETURN the Post Middleware as the Primary Middleware reference...
+            return httpPostMiddlewareShim;
         }
 
         /// <summary>
@@ -81,9 +168,9 @@ namespace HotChocolate.AzureFunctionsProxy
         /// </summary>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        public virtual async Task InvokeAsync(HttpContext httpContext)
+        public virtual Task InvokeAsync(HttpContext httpContext)
         {
-            await this.MiddlewareProxy.InvokeAsync(httpContext).ConfigureAwait(false);
+            return this.MiddlewareProxyDelegate.Invoke(httpContext);
         }
 
         /// <summary>
@@ -93,7 +180,7 @@ namespace HotChocolate.AzureFunctionsProxy
         /// <returns></returns>
         public virtual async Task<IErrorHandler> GetErrorHandlerAsync(CancellationToken cancellationToken)
         {
-            IRequestExecutor requestExecutor = await this.MiddlewareProxy.GetExecutorAsync(cancellationToken).ConfigureAwait(false);
+            IRequestExecutor requestExecutor = await this.PrimaryMiddleware.GetExecutorAsync(cancellationToken).ConfigureAwait(false);
 
             //Unable to use the HotChocolate Helper method GetErrorHandler() from RequestExecutorExtensions
             //  because it is marked as internal only, however, we can directly use the DI Provider in the same way.

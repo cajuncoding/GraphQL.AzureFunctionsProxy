@@ -20,8 +20,7 @@ namespace GraphQL.AzureFunctionsProxy.Tests
 
             return httpRequest;
         }
-
-
+        
         public void WriteLine(string text)
         {
             TestContext?.WriteLine(text);
