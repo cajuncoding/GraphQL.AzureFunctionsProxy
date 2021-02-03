@@ -156,9 +156,9 @@ to all paths for processing (e.g. CSS, JavaScript, Manifest.json asset requests)
 ```
 
 2. If you use the standard AzureFunctions configuration and map your function to Route to `graphql/{*path}` then you are done.
-However if you have changed either the default Azure Function prefix (which is `/api/`) or use a different Route binding, then youTo enable the Playground the Azure Function must be configured properly to serve all Web Assets dynamically
+However, if you have changed either the default Azure Function prefix (which is `/api/`) or use a different Route binding, then you
 need to explicitly tell the AzureFunctionsProxy what the expected base Url path is, so that the HC Middleware will successfully
-match the path and serve resources.
+match the path and serve all necessary resources.
    - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration as follows:
    - Assuming the following then the configuration would be as follows:
      - You have changed the default Azure Functions prefix from `api` to `my-api` in the `host.json` file.
