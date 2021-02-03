@@ -158,7 +158,7 @@ to all paths for processing (e.g. CSS, JavaScript, Manifest.json asset requests)
 2. Now it's a good idea to secure this Anonymous Playground endpoint to ensure that no data can
 be served from this endpoing, which helps ensure that all data requests must be sent to the 
 actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLevel.Function...)]`):
-NOTE: An Azure Function example of this is in the `StarWars-AzureFunctions` project.
+   - **Note:** An full example of this is configured in the `StarWars-AzureFunctions` project.
 
 ```csharp
         [FunctionName(nameof(GraphQLPlaygroundEndpoint))]
