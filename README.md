@@ -152,25 +152,59 @@ to all paths for processing (e.g. CSS, JavaScript, Manifest.json asset requests)
    - Take note of the ***/{\*path}*** component of the Route binding!
 ```csharp
         //NOTE: The Route must be configured to match wildcard path for the Playground to function properly.
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql/{*path}")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/playground/{*path}")] HttpRequest req
 ```
 
-2. If you use the standard AzureFunctions configuration and map your function to Route to `graphql/{*path}` then you are done.
-However, if you have changed either the default Azure Function prefix (which is `/api/`) or use a different Route binding, then you
-need to explicitly tell the AzureFunctionsProxy what the expected base Url path is, so that the HC Middleware will successfully
-match the path and serve all necessary resources.
+2. Now it's a good idea to secure this Anonymous Playground endpoint to ensure that no data can
+be served from this endpoing, which helps ensure that all data requests must be sent to the 
+actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLevel.Function...)]`):
+NOTE: An Azure Function example of this is in the `StarWars-AzureFunctions` project.
+
+```csharp
+        [FunctionName(nameof(GraphQLPlaygroundEndpoint))]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/playground/{*path}")] HttpRequest req,
+            ILogger logger,
+            CancellationToken cancellationToken
+        )
+        {
+            logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
+
+            //SECURE this endpoint against actual Data Queries
+            //  This is useful for exposing the playground anonymously, but keeping the actual GraphQL data endpoint
+            //  secured with AzureFunction token security and/or other authorization approach.
+            if (HttpMethods.IsPost(req.Method) || (HttpMethods.IsGet(req.Method) && !string.IsNullOrWhiteSpace(req.Query["query"])))
+            {
+                return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the Playground endpoint.");
+            }
+
+            return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
+                req.HttpContext,
+                logger,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+```
+
+
+3. Now with a valid Azure Function endpoing for our playground, that is secured so that data cannot be queried,
+we need to explicitly tell the AzureFunctionsProxy what the expected base url path is so that the HC Middleware 
+will successfully serve all necessary resources/assets.
    - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration as follows:
    - Assuming the following then the configuration would be as follows:
-     - You have changed the default Azure Functions prefix from `api` to `my-api` in the `host.json` file.
-     - You have added a version `v1` in front of the Route binding and renamed it so your Route binding is now: `Route = "v1/graphql-service/{*path}"
-     - *NOTE: you MUST still use the wildcard path matching for Playground to function properly.*
+     - This example assumes that you use a function `HttpTrigger` as defined above which allows running the GraphQL Playground client on it's own endpoint that is Anonymous;
+       - This allows you keep the actual `/graphql` data endpoint secured with Azure  Functions Token security and/or other authorization approach.
+     - *NOTE: The `HttpTrigger` Route binding for Playground MUST still use the wildcard path matching for Playground to function properly.*
 ```csharp
+
+        // In Startup.cs . . . 
+
         //Finally Initialize AzureFunctions Executor Proxy here...
         services.AddAzureFunctionsGraphQL((options) =>
         {
             //When accessing the GraphQL via AzureFunctions this is the path that all Urls will be prefixed with
             //  as configured in the AzureFunction host.json combined with the HttpTrigger Route binding.
-            options.AzureFunctionsRoutePath = "/api/v1/graphql-service";
+            options.AzureFunctionsRoutePath = "/api/graphql/playground";
         });
 ```
 

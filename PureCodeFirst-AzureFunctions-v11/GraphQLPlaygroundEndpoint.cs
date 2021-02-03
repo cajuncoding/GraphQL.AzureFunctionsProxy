@@ -29,7 +29,7 @@ namespace StarWars.AzureFunctions
 
         [FunctionName(nameof(GraphQLPlaygroundEndpoint))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "graphql/playground/{*path}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/playground/{*path}")] HttpRequest req,
             ILogger logger,
             CancellationToken cancellationToken
         )
