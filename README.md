@@ -1,4 +1,4 @@
-# GraphQL.AzureFunctionsProxy
+﻿# GraphQL.AzureFunctionsProxy
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11.
 
 **Update Notes:**
@@ -25,6 +25,14 @@ This is **Unofficial** but working for most common use cases.
 
 This also includes a working example of the StarWars Project running as an Azure Function
 and modified only as needed to run as expected (with v11 API)!
+
+### [Buy me a Coffee ☕](https://www.buymeacoffee.com/cajuncoding)
+*I'm happy to share with the community, but if you find this useful (e.g for professional use), and are so inclinded,
+then I do love-me-some-coffee!*
+
+<a href="https://www.buymeacoffee.com/cajuncoding" target="_blank">
+<img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174">
+</a> 
 
 ### Nuget Package (>=.netcoreapp3.1, Azure Functions v3)
 To use this as-is in your project, add the [GraphQL.AzureFunctionsProxy](https://www.nuget.org/packages/GraphQL.AzureFunctionsProxy) NuGet package to your project.
@@ -165,6 +173,18 @@ match the path and serve resources.
             options.AzureFunctionsRoutePath = "/api/v1/graphql-service";
         });
 ```
+
+#### Additional Playground Usage Notes:
+For Playground to function properly, with Azure Functions V2 using the proxy library, you 
+will have to use Anonymous function security when deployed (for now?).  This is becuase the HC 
+web app does not include the original querystring values for Function token ?code=123 when it 
+makes requests for assets so they will fail with 401 Unauthorized.  Alternatively, a 
+Chrome Plugin can be used to set the Token as a header value `x-functions-key`.  
+
+*It works well with the ModHeader Chrome Extension.  However, to eliminate that dependency, I may 
+look into making it easier to serve the Playground from an Anonymous Function (without 
+exposing the actual data endpoitn) and/or creating  Bookmarklet/Favlet that does 
+this without an extension in Chrome as time permits...*
 
 
 ## Disclaimers:
