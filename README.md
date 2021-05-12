@@ -106,6 +106,7 @@ handle the request.
 ```csharp
 using HotChocolate.AzureFunctionsProxy
 ```
+### Azure Function Setup (Proxy the Requests from the Function into HC Pipeline)
 
 2. Dependency Inject the new **IGraphQLAzureFunctionsExecutorProxy** into the Function Endpoint:
 ```csharp
@@ -178,7 +179,7 @@ actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLe
                 return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the Playground endpoint.");
             }
 
-            return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
+            return await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(
                 req.HttpContext,
                 logger,
                 cancellationToken
