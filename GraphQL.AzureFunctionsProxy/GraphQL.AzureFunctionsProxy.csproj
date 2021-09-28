@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>12.0.0.1</Version>
+    <Version>12.0.0.2</Version>
     <Authors>BBernard / CajunCoding</Authors>
     <Company>CajunCoding</Company>
     <Description>This is a extension package for HotChocolate GraphQL framework to enable execution within AzureFunctions V1 using the new v12 API. Provides very easy integration with Azure Functions with maximum support for out-of-the-box HotChocolate functionality.</Description>
@@ -10,7 +10,10 @@
     <PackageProjectUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
     <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless</PackageTags>
-    <PackageReleaseNotes>- Fully updated for new Hot Chocolate v12 released today (09/28/2021) with no significant breaking changes.
+    <PackageReleaseNotes>- Updated all references to v11 in code, comments, and readme (including some class names) to now reference v11+ for consistency; non-breaking changes as long as custom extensions for proper initialization is used.
+
+v12.0.0 Release Notes:
+- Fully updated for new Hot Chocolate v12 released today (09/28/2021) with no significant breaking changes.
 - Corrected GraphQL IDE naming to now be "Banana Cake Pop" instead of incorrrectly calling it "Playground" (the old IDE).
 - Original option EnablePlaygroundWebApp is now deprecated as obsolete and will be removed in a future release; use EnableBananaCakePop instead.
 - Default route is now /graphql/bcp/ instead of /graphql/playground.

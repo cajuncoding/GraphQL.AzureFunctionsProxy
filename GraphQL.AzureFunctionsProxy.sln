@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions", "PureCodeFirst-AzureFunctions-v11\StarWars-AzureFunctions.csproj", "{91E18C69-CD87-4305-B241-1DD04DB118F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions", "StarWars-AzureFunctions\StarWars-AzureFunctions.csproj", "{91E18C69-CD87-4305-B241-1DD04DB118F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.AzureFunctionsProxy", "GraphQL.AzureFunctionsProxy\GraphQL.AzureFunctionsProxy.csproj", "{EADE1DA0-404D-4504-86FD-B32BF70AF88F}"
 EndProject

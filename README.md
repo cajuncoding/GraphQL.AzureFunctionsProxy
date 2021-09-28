@@ -1,13 +1,19 @@
 ﻿# GraphQL.AzureFunctionsProxy
-## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11.
+## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11 & v12.
 
 **Update Notes:**
+- Updated for HotChocolate v12 support!
+- Enhanced StarWars Demo for testing/validating with v12 for additional manual tests.
+- With this major update, I'm now correctly calling the GraphQL IDE "Banana Cake Pop" instead of "Playground" (which is the Old IDE).
+- GraphQL IDE naming is now updated consistently to be called BananaCakePop (new IDE from v11) in code, comments, and Readme; updated Readme sample code also.
+- Deprecated as obsolete the old EnablePlaygroundWebApp option which will be removed in future release; but remains in place and supported at this time for easier upgrade/transition of projects using the AzureFunctionsProxy.
+
+
+Prior Release Notes:
 - Added support for ?SDL download of the Schema (?SDL)
 - Added support for Functioning GraphQL IDE *(Banana Cake Pop)* (when configured correctly iin the AzureFunction HttpTrigger route binding & new path option).
 - Reduced the number of awaits used in the Middleware proxy for performance.
 - Maintained compatibility with v11.0.4.
-
-Prior Release Notes:
 - Added ConfigureAwait(false) to all awaits for performance.
 - Bumped to HC v11.0.4
 - Updated to HC v11.0.1.1 due to critical fixes in HC v11.0.1 that resolve an issue in HC core that had broken Interfaces (which impacted the accompanying Star Wars Demo)

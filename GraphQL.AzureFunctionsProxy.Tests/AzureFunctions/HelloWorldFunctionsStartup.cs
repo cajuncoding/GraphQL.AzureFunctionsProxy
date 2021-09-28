@@ -22,7 +22,7 @@ namespace GraphQL.AzureFunctionsProxy.Tests
             var services = builder.Services;
 
             // Add GraphQL Services
-            //Updated to Initialize StarWars with new v11 configuration...
+            //Updated to Initialize StarWars with v11+ configuration...
             services
                 .AddGraphQLServer()
                 .AddQueryType(d => d.Name("Query"))

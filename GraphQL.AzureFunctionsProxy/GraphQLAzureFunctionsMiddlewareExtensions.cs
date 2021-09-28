@@ -37,8 +37,8 @@ namespace HotChocolate.AzureFunctionsProxy
         )
         {
             //serviceCollection.AddAzureFunctionsGraphQL(new AzureFunctionsMiddlewareOptions());
-            serviceCollection.AddSingleton<IGraphQLAzureFunctionsExecutorProxy, GraphQLAzureFunctionsExecutorProxyV11>(
-                provider => new GraphQLAzureFunctionsExecutorProxyV11(
+            serviceCollection.AddSingleton<IGraphQLAzureFunctionsExecutorProxy, GraphQLAzureFunctionsExecutorProxyV11Plus>(
+                provider => new GraphQLAzureFunctionsExecutorProxyV11Plus(
                     provider.GetService<IRequestExecutorResolver>(),
                     provider.GetService<IHttpResultSerializer>(),
                     provider.GetService<IHttpRequestParser>(),
