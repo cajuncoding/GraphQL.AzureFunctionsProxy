@@ -18,11 +18,11 @@ namespace HotChocolate.AzureFunctionsProxy
     ///This class that provides a proxy between Azure Functions and the existing HotChocolate Http middleware
     ///  for both GET & POST request processing.
     /// </summary>
-    public class GraphQLAzureFunctionsExecutorProxyV11 : IGraphQLAzureFunctionsExecutorProxy
+    public class GraphQLAzureFunctionsExecutorProxyV11Plus : IGraphQLAzureFunctionsExecutorProxy
     {
         protected GraphQLAzureFunctionsMiddlewareProxy AzureFunctionsMiddlewareProxy { get; }
 
-        public GraphQLAzureFunctionsExecutorProxyV11(
+        public GraphQLAzureFunctionsExecutorProxyV11Plus(
             IRequestExecutorResolver graphQLExecutorResolver,
             IHttpResultSerializer graphQLResultSerializer,
             IHttpRequestParser graphQLRequestParser,

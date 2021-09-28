@@ -28,24 +28,24 @@ namespace StarWars
             services.AddSingleton<IReviewRepository, ReviewRepository>();
 
             // Add GraphQL Services
-            //Updated to Initialize StarWars with new v11 configuration...
+            //Updated to Initialize StarWars with new v11+ configuration...
             services
                 .AddGraphQLServer()
                 .AddQueryType(d => d.Name("Query"))
                 .AddMutationType(d => d.Name("Mutation"))
-                //Disabled Subscriptions for v11 and Azure Functions Example due to 
+                //Disabled Subscriptions for v11+ and Azure Functions Example due to 
                 //  supportability in Serverless architecture...
                 //.AddSubscriptionType(d => d.Name("Subscription"))
                 .AddType<CharacterQueries>()
                 .AddType<ReviewQueries>()
                 .AddType<ReviewMutations>()
-                //Disabled Subscriptions for v11 and Azure Functions Example due to 
+                //Disabled Subscriptions for v11+ and Azure Functions Example due to 
                 //  supportability in Serverless architecture...
                 //.AddType<ReviewSubscriptions>()
                 .AddType<Human>()
                 .AddType<Droid>()
                 .AddType<Starship>()
-                //Now Required in v11 to support the Attribute Usage (e.g. you may see the
+                //Now Required in v11+ to support the Attribute Usage (e.g. you may see the
                 //  error: No filter convention found for scope `none`
                 .AddFiltering()
                 .AddSorting();
