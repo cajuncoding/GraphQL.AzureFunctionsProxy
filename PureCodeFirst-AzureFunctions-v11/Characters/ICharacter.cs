@@ -11,16 +11,6 @@ namespace StarWars.Characters
     public interface ICharacter : ISearchResult
     {
         /// <summary>
-        /// The unique identifier for the character.
-        /// </summary>
-        int Id { get; }
-
-        /// <summary>
-        /// The name of the character.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
         /// The ids of the character's friends.
         /// </summary>
         //NOTE: Updated to use v11 method...

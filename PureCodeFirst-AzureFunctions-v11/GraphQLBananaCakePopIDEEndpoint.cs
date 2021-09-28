@@ -18,18 +18,18 @@ namespace StarWars.AzureFunctions
     /// NOTE: This class is not marked as static so that .Net Core DI handles injecting
     ///         the Executor Proxy for us.
     /// </summary>
-    public class GraphQLPlaygroundEndpoint
+    public class GraphQLBananaCakePopEndpoint
     {
         private readonly IGraphQLAzureFunctionsExecutorProxy _graphQLExecutorProxy;
 
-        public GraphQLPlaygroundEndpoint(IGraphQLAzureFunctionsExecutorProxy graphQLExecutorProxy)
+        public GraphQLBananaCakePopEndpoint(IGraphQLAzureFunctionsExecutorProxy graphQLExecutorProxy)
         {
             _graphQLExecutorProxy = graphQLExecutorProxy;
         }
 
-        [FunctionName(nameof(GraphQLPlaygroundEndpoint))]
+        [FunctionName(nameof(GraphQLBananaCakePopEndpoint))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/playground/{*path}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/bcp/{*path}")] HttpRequest req,
             ILogger logger,
             CancellationToken cancellationToken
         )
@@ -37,11 +37,11 @@ namespace StarWars.AzureFunctions
             logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
 
             //SECURE this endpoint against actual Data Queries
-            //  This is useful for exposing the playground anonymously, but keeping the actual GraphQL data endpoint
+            //  This is useful for exposing the GraphQL IDE (Banana Cake Pop) anonymously, but keeping the actual GraphQL data endpoint
             //  secured with AzureFunction token security and/or other authorization approach.
             if (HttpMethods.IsPost(req.Method) || (HttpMethods.IsGet(req.Method) && !string.IsNullOrWhiteSpace(req.Query["query"])))
             {
-                return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the Playground endpoint.");
+                return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the GraphQL IDE endpoint.");
             }
 
             return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(

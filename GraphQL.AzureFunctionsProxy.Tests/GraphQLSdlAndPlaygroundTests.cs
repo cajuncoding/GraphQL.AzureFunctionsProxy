@@ -11,7 +11,7 @@ using StarWars.AzureFunctions;
 namespace GraphQL.AzureFunctionsProxy.Tests
 {
     [TestClass]
-    public class GraphQLSdlAndPlaygroundTests : AzureFunctionGraphQLTestBase
+    public class GraphQLSdlAndBananaCakePopTests : AzureFunctionGraphQLTestBase
     {
         [TestMethod]
         public async Task TestSDLRetrieval()

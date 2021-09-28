@@ -3,7 +3,7 @@
 
 **Update Notes:**
 - Added support for ?SDL download of the Schema (?SDL)
-- Added support for Functioning Playground (when configured correctly iin the AzureFunction HttpTrigger route binding & new path option).
+- Added support for Functioning GraphQL IDE *(Banana Cake Pop)* (when configured correctly iin the AzureFunction HttpTrigger route binding & new path option).
 - Reduced the number of awaits used in the Middleware proxy for performance.
 - Maintained compatibility with v11.0.4.
 
@@ -90,14 +90,14 @@ handle the request.
         services.AddAzureFunctionsGraphQL();
 ```
 
-  - Or to enable/disable new features for Schema Download (?SDL) or Playground (DEFAULT is enabled):
+  - Or to enable/disable new features for Schema Download (?SDL) or GraphQL IDE *(Banana Cake Pop)* (DEFAULT is enabled):
 ```csharp
         //Finally Initialize AzureFunctions Executor Proxy here...
         services.AddAzureFunctionsGraphQL((options) =>
         {
             options.AzureFunctionsRoutePath = "/api/graphql"; //Default value is already `/api/graphql`
             options.EnableSchemaDefinitionDownload = true; //Default is already Enabled (true)
-            options.EnablePlaygroundWebApp = true; //Default is already Enabled (true)
+            options.EnableBananaCakePop = true; //Default is already Enabled (true)
             options.EnableGETRequests = true; //Default is already Enabled (true)
         });
 ```
@@ -127,7 +127,7 @@ public class StarWarsFunctionEndpoint
 ```csharp
         [FunctionName(nameof(StarWarsFunctionEndpoint))]
         public async Task<IActionResult> Run(
-            //NOTE: The Route must be configured to match wildcard path for the Playground to function properly.
+            //NOTE: The Route must be configured to match wildcard path for the GraphQL IDE *(Banana Cake Pop)* to function properly.
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql/{*path}")] HttpRequest req,
             ILogger logger,
             CancellationToken cancellationToken
@@ -143,8 +143,8 @@ public class StarWarsFunctionEndpoint
         }
 ```
 
-### Enabling the Playground from AzureFunctions
-1. To enable the Playground the Azure Function must be configured properly to serve all Web Assets dynamically
+### Enabling the GraphQL IDE *(Banana Cake Pop)* via AzureFunctions
+1. To enable the GraphQL IDE *(Banana Cake Pop)* the Azure Function must be configured properly to serve all Web Assets dynamically
 for various paths, and the Middleware must be told what the AzureFunction path is via the Options configuration.
 
    - To do this, the HttpTrigger must be configured with wildcard matching on the path so that the Function will be bound
@@ -152,19 +152,19 @@ to all paths for processing (e.g. CSS, JavaScript, Manifest.json asset requests)
 
    - Take note of the ***/{\*path}*** component of the Route binding!
 ```csharp
-        //NOTE: The Route must be configured to match wildcard path for the Playground to function properly.
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/playground/{*path}")] HttpRequest req
+        //NOTE: The Route must be configured to match wildcard path for the GraphQL IDE *(Banana Cake Pop)* to function properly.
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/bcp/{*path}")] HttpRequest req
 ```
 
-2. Now it's a good idea to secure this Anonymous Playground endpoint to ensure that no data can
+2. Now it's a good idea to secure this Anonymous GraphQL IDE *(Banana Cake Pop)* endpoint to ensure that no data can
 be served from this endpoing, which helps ensure that all data requests must be sent to the 
 actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLevel.Function...)]`):
    - **Note:** An full example of this is configured in the `StarWars-AzureFunctions` project.
 
 ```csharp
-        [FunctionName(nameof(GraphQLPlaygroundEndpoint))]
+        [FunctionName(nameof(GraphQLBananaCakePopEndpoint))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/playground/{*path}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "graphql/bcp/{*path}")] HttpRequest req,
             ILogger logger,
             CancellationToken cancellationToken
         )
@@ -172,11 +172,11 @@ actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLe
             logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
 
             //SECURE this endpoint against actual Data Queries
-            //  This is useful for exposing the playground anonymously, but keeping the actual GraphQL data endpoint
+            //  This is useful for exposing the GraphQL IDE *(Banana Cake Pop)* anonymously, but keeping the actual GraphQL data endpoint
             //  secured with AzureFunction token security and/or other authorization approach.
             if (HttpMethods.IsPost(req.Method) || (HttpMethods.IsGet(req.Method) && !string.IsNullOrWhiteSpace(req.Query["query"])))
             {
-                return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the Playground endpoint.");
+                return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the GraphQL IDE *(Banana Cake Pop)* endpoint.");
             }
 
             return await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(
@@ -188,14 +188,14 @@ actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLe
 ```
 
 
-3. Now with a valid Azure Function endpoing for our playground, that is secured so that data cannot be queried,
+3. Now with a valid Azure Function endpoing for our GraphQL IDE *(Banana Cake Pop)*, that is secured so that data cannot be queried,
 we need to explicitly tell the AzureFunctionsProxy what the expected base url path is so that the HC Middleware 
 will successfully serve all necessary resources/assets.
    - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration as follows:
    - Assuming the following then the configuration would be as follows:
-     - This example assumes that you use a function `HttpTrigger` as defined above which allows running the GraphQL Playground client on it's own endpoint that is Anonymous;
+     - This example assumes that you use a function `HttpTrigger` as defined above which allows running the GraphQL IDE *(Banana Cake Pop)* on it's own endpoint that is Anonymous;
        - This allows you keep the actual `/graphql` data endpoint secured with Azure  Functions Token security and/or other authorization approach.
-     - *NOTE: The `HttpTrigger` Route binding for Playground MUST still use the wildcard path matching for Playground to function properly.*
+     - *NOTE: The `HttpTrigger` Route binding for GraphQL IDE *(Banana Cake Pop)* MUST still use the wildcard path matching for it to function properly.*
 ```csharp
 
         // In Startup.cs . . . 
@@ -205,32 +205,32 @@ will successfully serve all necessary resources/assets.
         {
             //When accessing the GraphQL via AzureFunctions this is the path that all Urls will be prefixed with
             //  as configured in the AzureFunction host.json combined with the HttpTrigger Route binding.
-            options.AzureFunctionsRoutePath = "/api/graphql/playground";
+            options.AzureFunctionsRoutePath = "/api/graphql/bcp";
         });
 ```
 
-#### Additional Playground Usage Notes:
-For Playground to function properly, with Azure Functions V2 using the proxy library, you 
+#### Additional GraphQL IDE *(Banana Cake Pop)* Usage Notes:
+For GraphQL IDE *(Banana Cake Pop)* to function properly, with Azure Functions V2 using the proxy library, you 
 will have to use Anonymous function security when deployed (for now?).  This is becuase the HC 
 web app does not include the original querystring values for Function token ?code=123 when it 
 makes requests for assets so they will fail with 401 Unauthorized.  Alternatively, a 
 Chrome Plugin can be used to set the Token as a header value `x-functions-key`.  
 
 *It works well with the ModHeader Chrome Extension.  However, to eliminate that dependency, I may 
-look into making it easier to serve the Playground from an Anonymous Function (without 
+look into making it easier to serve the GraphQL IDE *(Banana Cake Pop)* from an Anonymous Function (without 
 exposing the actual data endpoitn) and/or creating  Bookmarklet/Favlet that does 
 this without an extension in Chrome as time permits...*
 
 
 ## Disclaimers:
-* PlayGround & Schema Download Functionality:
-  - There is one key reason that Playground and Schema Download works -- because the DEFAULT values for the GraphQL Options are to Enable them!  
+* GraphQL IDE *(Banana Cake Pop)* & Schema Download Functionality:
+  - There is one key reason that GraphQL IDE *(Banana Cake Pop)* and Schema Download works -- because the DEFAULT values of HotChocolate's GraphQL Options are to Enable them!  
   - At this time the AzureFunctionsProxy can enablee/disable the middleware by either wiring up the Middleware or not.
   - But, the HC middleware checks for GraphQL configured options that are set at Configuration build time to see if these are enable/disabled, 
-and that is stored on *Endpoint Metadata* that is not accessible (to my knowledge so far) in the Azure Function
+and these options are stored on *Endpoint Metadata* that is **not accessible** (to my knowledge so far) in the Azure Function
   - This is because in Azure Functions (V2) we do not control the routing configuration at the same level of control that 
-an Asp.Net Core application has.
-  - However, since the HC defaults are to be `Enabled = true` then it's a non-issue!
+an Asp.Net Core applications do.
+  - However, since the HC defaults are to be `Enabled = true` then it's a non-issue and everything works wonderfully!
 * Subscriptsion were disabled in the example project due to unknown supportability in a 
 serverless environment. 
   * The StarWars example uses in-memory subscriptions which are incongruent with the serverless

@@ -58,7 +58,7 @@ namespace StarWars
                 //The Path must match the exact routing path that the Azure Function HttpTrigger is bound to.
                 //NOTE: ThIs includes the /api/ prefix unless it was specifically removed or changed in the host.json file.
                 //NOTE: THe default value is `/api/graphql`, but it's being done here to illustrate how to set the value.
-                options.AzureFunctionsRoutePath = "/api/graphql/playground";
+                options.AzureFunctionsRoutePath = "/api/graphql/bcp";
             });
         }
     }

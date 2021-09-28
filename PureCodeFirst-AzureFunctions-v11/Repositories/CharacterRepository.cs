@@ -45,8 +45,7 @@ namespace StarWars.Repositories
         public IEnumerable<ISearchResult> Search(string text)
         {
             IEnumerable<ICharacter> filteredCharacters = _characters.Values
-                .Where(t => t.Name.Contains(text,
-                    StringComparison.OrdinalIgnoreCase));
+                .Where(t => t.Name.Contains(text, StringComparison.OrdinalIgnoreCase));
 
             foreach (ICharacter character in filteredCharacters)
             {
@@ -54,8 +53,7 @@ namespace StarWars.Repositories
             }
 
             IEnumerable<Starship> filteredStarships = _starships.Values
-                .Where(t => t.Name.Contains(text,
-                    StringComparison.OrdinalIgnoreCase));
+                .Where(t => t.Name.Contains(text, StringComparison.OrdinalIgnoreCase));
 
             foreach (Starship starship in filteredStarships)
             {

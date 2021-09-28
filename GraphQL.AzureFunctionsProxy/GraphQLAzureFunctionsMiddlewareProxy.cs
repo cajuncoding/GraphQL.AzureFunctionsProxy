@@ -82,7 +82,7 @@ namespace HotChocolate.AzureFunctionsProxy
             //BBernard - Initialize the middleware proxy and pipeline with support for both Http GET & POST processing...
             //NOTE: Middleware uses the Pipeline Pattern (e.g. Chain Of Responsibility), therefore
             //  we adapt that here to manually build up the key middleware handlers for Http Get & Http Post processing.
-            //NOTE: Other key features such as Schema download and the Playground (Banana Cake Pop Dynamic UI) are all
+            //NOTE: Other key features such as Schema download and the GraphQL IDE (Banana Cake Pop Dynamic UI) are all
             //      delivered by other Middleware also.
             //NOTE: Middleware MUST be configured in the correct order of dependency to support the functionality and
             //          the chain of responsibility is executed inside-out; or last registered middleware will run first and
@@ -109,7 +109,7 @@ namespace HotChocolate.AzureFunctionsProxy
                 this.MiddlewareProxyDelegate = (httpContext) => httpGetMiddlewareShim.InvokeAsync(httpContext);
             }
 
-            if (Options.EnablePlaygroundWebApp)
+            if (Options.EnableBananaCakePop)
             {
                 var toolStaticFileMiddlewareShim = new ToolStaticFileMiddleware(
                     this.MiddlewareProxyDelegate,
@@ -119,10 +119,8 @@ namespace HotChocolate.AzureFunctionsProxy
                 this.MiddlewareProxyDelegate = (httpContext) => toolStaticFileMiddlewareShim.Invoke(httpContext);
 
                 var toolOptionsFileMiddlewareShim = new ToolOptionsFileMiddleware(
+                    //New for v12 The Constructor for this Middleware is simplified and no longer requires the injection of GraphQL dependencies because it's simply a File Handler for BCP
                     this.MiddlewareProxyDelegate,
-                    this.ExecutorResolver,
-                    this.ResultSerializer,
-                    this.SchemaName,
                     this.RoutePath
                 );
                 this.MiddlewareProxyDelegate = (httpContext) => toolOptionsFileMiddlewareShim.Invoke(httpContext);
@@ -141,7 +139,9 @@ namespace HotChocolate.AzureFunctionsProxy
                     this.MiddlewareProxyDelegate,
                     this.ExecutorResolver,
                     this.ResultSerializer,
-                    this.SchemaName
+                    this.SchemaName,
+                    //New v12 parameter set to Integrated to enable integrated/default functionality (compatible with v11 behavior).
+                    MiddlewareRoutingType.Integrated
                 );
                 this.MiddlewareProxyDelegate = (httpContext) => httpGetSchemaMiddlewareShim.InvokeAsync(httpContext);
             }
@@ -175,7 +175,7 @@ namespace HotChocolate.AzureFunctionsProxy
 
         /// <summary>
         /// Internal helper to retrieve the current Error handler needed for Error processing.
-        /// Matches logic used by existing HttpPostMiddlware.
+        /// Matches logic used by existing HttpPostMiddleware.
         /// </summary>
         /// <returns></returns>
         public virtual async Task<IErrorHandler> GetErrorHandlerAsync(CancellationToken cancellationToken)
@@ -192,7 +192,7 @@ namespace HotChocolate.AzureFunctionsProxy
         /// Borrowed this code to make error handling easier for writing errors to the Response
         /// in the same way that the existing Http Get/Post Middleware does.
         /// 
-        /// NOTE: Attempted to inherit from HttpPostMiddlware to expose existing method, but due to
+        /// NOTE: Attempted to inherit from HttpPostMiddleware to expose existing method, but due to
         ///   constructor chaining order of processing and next() pipeline references being private in
         ///   the base class, it wasn't effectively possible without resorting to brute-force reflection,
         ///   so we duplicate some small amount of code here to provide the same Write logic for writing
