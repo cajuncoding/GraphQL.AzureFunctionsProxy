@@ -199,7 +199,7 @@ we need to explicitly tell the AzureFunctionsProxy what the expected base url pa
 will successfully serve all necessary resources/assets.
    - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration as follows:
    - Assuming the following then the configuration would be as follows:
-     - This example assumes that you use a function `HttpTrigger` as defined above which allows running the GraphQL IDE *(Banana Cake Pop)* on it's own endpoint that is Anonymous;
+     - This example assumes that you use a function `HttpTrigger` as defined above which allows running the GraphQL IDE *(Banana Cake Pop)* on its own endpoint that is anonymous;
        - This allows you keep the actual `/graphql` data endpoint secured with Azure  Functions Token security and/or other authorization approach.
      - *NOTE: The `HttpTrigger` Route binding for GraphQL IDE *(Banana Cake Pop)* MUST still use the wildcard path matching for it to function properly.*
 ```csharp
@@ -224,7 +224,7 @@ Chrome Plugin can be used to set the Token as a header value `x-functions-key`.
 
 *It works well with the ModHeader Chrome Extension.  However, to eliminate that dependency, I may 
 look into making it easier to serve the GraphQL IDE *(Banana Cake Pop)* from an Anonymous Function (without 
-exposing the actual data endpoitn) and/or creating  Bookmarklet/Favlet that does 
+exposing the actual data endpoint) and/or creating  Bookmarklet/Favlet that does 
 this without an extension in Chrome as time permits...*
 
 
