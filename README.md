@@ -222,7 +222,7 @@ will successfully serve all necessary resources/assets.
 ```
 
 #### Additional GraphQL IDE *(Banana Cake Pop)* Usage Notes:
-For GraphQL IDE *(Banana Cake Pop)* to function properly, with Azure Functions V2 using the proxy library, you 
+For GraphQL IDE *(Banana Cake Pop)* to function properly, with Azure Functions V2/V3 using the proxy library, you 
 may have to use Anonymous function security when deployed (for now?).  This is becuase the HC 
 web app does not include the original querystring values for Function token ?code=123 when it 
 makes requests for assets so they will fail with 401 Unauthorized.  Alternatively, a 
@@ -241,21 +241,20 @@ this without an extension in Chrome as time permits...*
   - At this time the AzureFunctionsProxy can enablee/disable the middleware by either wiring up the Middleware or not.
   - But, the HC middleware checks for GraphQL configured options that are set at Configuration build time to see if these are enable/disabled, 
 and these options are stored on *Endpoint Metadata* that is **not accessible** (to my knowledge so far) in the Azure Function
-  - This is because in Azure Functions (V2) we do not control the routing configuration at the same level of control that 
+  - This is because in Azure Functions (V2/V3) we do not control the routing configuration with the same level of control that 
 an Asp.Net Core applications do.
-  - However, since the HC defaults are to be `Enabled = true` then it's a non-issue and everything works wonderfully!
-* Subscriptsion were disabled in the example project due to unknown supportability in a 
+  - However, since the HC defaults are `Enabled = true` then it's a non-issue and everything works wonderfully!
+* Subscriptions were disabled in the example project due to unknown supportability in a 
 serverless environment. 
   * The StarWars example uses in-memory subscriptions which are incongruent with the serverless
 paradigm of AzureFunctions.
 
 ## Credits:
-* Initial thoughts around design were adapted from [*OneCyrus'* Repo located here](https://github.com/OneCyrus/GraphQL-AzureFunctions-HotChocolate).
-  * *OneCyrus'* example is designed around HotChocolate **v10 API** and the execution & configuration pipelines
+* Some initial thoughts around design were adapted from [*OneCyrus'* Repo located here](https://github.com/OneCyrus/GraphQL-AzureFunctions-HotChocolate).
+  * However *OneCyrus'* example is both old and limited; it was designed around HotChocolate **v10 API** and the execution & configuration pipelines
     have changed significantly in the new **v11 API**.
-  * This example also did not support BatchRequests, Extension values, etc... 
+  * OneCyrus' approach did not correctly support key elements like BatchRequests, Extension values, etc... 
   * Therefore, rather than manually processing request as this prior example did, this approach 
-    is different and leverages
-alot more OOTB code from **HotChocolate.AspNetCore**
+    is different and leverages alot more OOTB code from **HotChocolate.AspNetCore**
 * The [HotChocolate Slack channel](https://join.slack.com/t/hotchocolategraphql/shared_invite/enQtNTA4NjA0ODYwOTQ0LTViMzA2MTM4OWYwYjIxYzViYmM0YmZhYjdiNzBjOTg2ZmU1YmMwNDZiYjUyZWZlMzNiMTk1OWUxNWZhMzQwY2Q)
 was helpful for searching and getting some feedback to iron this out quickly.
