@@ -27,7 +27,9 @@ This is a extension package for HotChocolate GraphQL framework to enable executi
 within AzureFunctions using a simple Proxy so that all original functionality of functions
 endpoints are unaffected.
 
-This is **Unofficial** but working for most common use cases.
+This is **Unofficial** but working great in production use and is currently the best way to
+run HotChocolate inside Azure Functions in-process (V1, V2, V3) model (DotNet 5 uses
+The out-of-process model which currently has some limitations.
 
 This also includes a working example of the StarWars Project running as an Azure Function
 and modified only as needed to run as expected (with v11 API)!
@@ -41,35 +43,39 @@ then I do love-me-some-coffee!*
 </a> 
 
 ### Nuget Package (>=.netcoreapp3.1, Azure Functions v3)
-To use this as-is in your project, add the [GraphQL.AzureFunctionsProxy](https://www.nuget.org/packages/GraphQL.AzureFunctionsProxy) NuGet package to your project.
- and wire up your Starup and AzureFunction endpoint as outlined below...
+To use this as-is in your project, add the [GraphQL.AzureFunctionsProxy](https://www.nuget.org/packages/GraphQL.AzureFunctionsProxy) NuGet package to your project
+ and wire up your Startup class and AzureFunction endpoint as outlined below...
 
 
 ## Demo Site (Star Wars)
 This project contains a clone of the HotChocolate GraphQL *Star Wars* example project (Annotation based version; Pure Code First)
-running as an AzureFunctions app and mildly updated to use the new v11 API. 
+running as an AzureFunction app and updated to use the new v11+ API. 
 
-HotChocolate has changed the Execution pipeline for v11 API in many ways, and existing AzureFunctions
-implementation samples don't account for various common use cases like BatchRequests, etc.
+HotChocolate has changed the Execution pipeline for v11+ API in many ways, and prior AzureFunctions
+implementation samples (especially for v10) are very limited; they don't account for various common use cases like BatchRequests, etc.
 
 ### NOTES: 
 1. **NOTE:** According to the HotChocolate team on Slack, they will provide an Official AzureFunctions 
-middleware as part of v11 (eventually). However it will be based on the cutting edge version of 
-Azure Functions that enable running/initializing a project exactly like a normal AspNerCore app. 
+support as part of v12+. However it will be based on the cutting edge version of 
+Azure Functions that uses the out-of-process model that will enable running/initializing a project exactly like a normal AspNetCore app.
+But as Microsoft notes that is currently limited in some ways and won't be fully embraced until AzureFunctions are updated 
+for .Net 6 as the LTR support version. 
 So this library may still help address gaps in existing Azure Function projects :-)
-2. **NOTE: Moderate Testing has been done on this and we are actively using it on projects, 
+2. **NOTE: Testing has been done on this and we are actively using it on projects deployed in production, 
 and will update with any findings; we have not completed exhaustive testing of all HotChocolate functionality.**
+However by ensuring that we fully implement the HC Middleware pipeline as a proxy this project has a very low surface
+area for risks of issues other than those that may be inherent in a serverless environment.
 
 ## Goals
 
-* To provide a working approach to using the new **v11 API** until an official Middleware
-is provided. 
+* To provide a working approach to using the new **v11/v12 API** until an official support
+is provided and available in Azure Functions with LTR support.
 * Keep this code fully encapsulated so that switching to the official Middleware will be as
-painless and simple as possible *(with a few design assumptions aside)*.
-* Keep this adaptation layer as lean and DRY as possible while also supporting as much OOTB
-functionality as possible.
+painless and simple as possible *(with a few unavoidable design assumptions aside)*.
+* Keep this adaptation layer as lean and DRY as possible to minimize the surface area of any risks, 
+while also supporting as much OOTB functionality as possible.
 * Ensures that the Azure Functions paradigm and flexibility are not lost, so that all OOTB 
-C# bindings, DI, and current Function invocation are maintained.
+C# bindings, DI, and current Function invocation capabilities of most common Azure Function apps are maintained.
 
 ## Implementation:
 This approach uses a "Middleware Proxy" pattern whereby we provide the functionality of the 
@@ -81,10 +87,10 @@ This Proxy exposes an "executor" interface that can process the HttpContext in a
 However, any pre/post logic could be added before/after the invocation of the executor proxy 
 *IGraphQLAzureFunctionsExecutorProxy*.
 
-This proxy is setup by internally configuring a Middleware Proxy that is an encapsulation of the 
-existing HotChocolate *HttpPostMiddleware* & *HttpGetMiddleware* configured as a simple pipeline for processing POST 
-requests first and then defaulting back to GET requests, and erroring out if neither are able to 
-handle the request.
+This proxy is setup by internally configuring a Middleware Proxy pipeline that is an encapsulation of the 
+existing HotChocolate *HttpPostMiddleware*, *HttpGetMiddleware*, etc configured as a simple pipeline for processing POST 
+requests first and then defaulting back to GET requests,and erroring out if neither are able to 
+handle the request. BananaCakePop middleware is also enabled in the same order as default HC core code does.
 
 ## Key Elements:
 
@@ -96,7 +102,7 @@ handle the request.
         services.AddAzureFunctionsGraphQL();
 ```
 
-  - Or to enable/disable new features for Schema Download (?SDL) or GraphQL IDE *(Banana Cake Pop)* (DEFAULT is enabled):
+  - Or to enable/disable new features for Schema Download (?SDL) or GraphQL IDE *(Banana Cake Pop)* (DEFAULT is enabled) you may use:
 ```csharp
         //Finally Initialize AzureFunctions Executor Proxy here...
         services.AddAzureFunctionsGraphQL((options) =>
@@ -108,7 +114,7 @@ handle the request.
         });
 ```
 
-  * Note: The namespace for this new middleware and proxy classes as needed is:
+  * Note: The namespace for this proxy class as needed is:
 ```csharp
 using HotChocolate.AzureFunctionsProxy
 ```
@@ -163,9 +169,9 @@ to all paths for processing (e.g. CSS, JavaScript, Manifest.json asset requests)
 ```
 
 2. Now it's a good idea to secure this Anonymous GraphQL IDE *(Banana Cake Pop)* endpoint to ensure that no data can
-be served from this endpoing, which helps ensure that all data requests must be sent to the 
+be served from this endpoint, which helps ensure that all data requests must be sent to the 
 actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLevel.Function...)]`):
-   - **Note:** An full example of this is configured in the `StarWars-AzureFunctions` project.
+   - **Note:** A full example of this is configured in the `StarWars-AzureFunctions` project.
 
 ```csharp
         [FunctionName(nameof(GraphQLBananaCakePopEndpoint))]
@@ -194,10 +200,10 @@ actual data endpoint that can be kept secure (e.g. `[HttpTrigger(AuthorizationLe
 ```
 
 
-3. Now with a valid Azure Function endpoing for our GraphQL IDE *(Banana Cake Pop)*, that is secured so that data cannot be queried,
+3. Now with a valid Azure Function endpoint for our GraphQL IDE *(Banana Cake Pop)*, that is secured so that data cannot be queried,
 we need to explicitly tell the AzureFunctionsProxy what the expected base url path is so that the HC Middleware 
 will successfully serve all necessary resources/assets.
-   - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration as follows:
+   - This is done easily by setting the `AzureFunctionsRoutePath` option in the configuration; this config value must match the path that the Azure Function will use so that the HC core middleware will work as expected.
    - Assuming the following then the configuration would be as follows:
      - This example assumes that you use a function `HttpTrigger` as defined above which allows running the GraphQL IDE *(Banana Cake Pop)* on its own endpoint that is anonymous;
        - This allows you keep the actual `/graphql` data endpoint secured with Azure  Functions Token security and/or other authorization approach.
@@ -209,7 +215,7 @@ will successfully serve all necessary resources/assets.
         //Finally Initialize AzureFunctions Executor Proxy here...
         services.AddAzureFunctionsGraphQL((options) =>
         {
-            //When accessing the GraphQL via AzureFunctions this is the path that all Urls will be prefixed with
+            //When accessing the GraphQL via AzureFunctions this path must match what that all Urls will be prefixed with
             //  as configured in the AzureFunction host.json combined with the HttpTrigger Route binding.
             options.AzureFunctionsRoutePath = "/api/graphql/bcp";
         });
@@ -217,10 +223,11 @@ will successfully serve all necessary resources/assets.
 
 #### Additional GraphQL IDE *(Banana Cake Pop)* Usage Notes:
 For GraphQL IDE *(Banana Cake Pop)* to function properly, with Azure Functions V2 using the proxy library, you 
-will have to use Anonymous function security when deployed (for now?).  This is becuase the HC 
+may have to use Anonymous function security when deployed (for now?).  This is becuase the HC 
 web app does not include the original querystring values for Function token ?code=123 when it 
 makes requests for assets so they will fail with 401 Unauthorized.  Alternatively, a 
-Chrome Plugin can be used to set the Token as a header value `x-functions-key`.  
+Chrome Plugin can be used to set the Token as a header value `x-functions-key` on all requests
+which would be injected by the plug-in rather than the BCP client.
 
 *It works well with the ModHeader Chrome Extension.  However, to eliminate that dependency, I may 
 look into making it easier to serve the GraphQL IDE *(Banana Cake Pop)* from an Anonymous Function (without 
