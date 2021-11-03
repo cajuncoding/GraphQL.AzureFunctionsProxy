@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.AzureFunctionsProxy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars.GraphQL.Common", "StarWars.Common\StarWars.GraphQL.Common.csproj", "{3D884B8B-A117-41A0-8C15-A68D891E3021}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions-OutOfProcessProcess", "StarWars-AzureFunctions-OutOfProcessProcess\StarWars-AzureFunctions-OutOfProcessProcess.csproj", "{07DF34DD-19D6-4CFB-80A7-3CAC6B102A97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions-IsolatedProcess", "StarWars-AzureFunctions-IsolatedProcess\StarWars-AzureFunctions-IsolatedProcess.csproj", "{07DF34DD-19D6-4CFB-80A7-3CAC6B102A97}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.AzureFunctionsProxy.IsolatedProcess", "GraphQL.AzureFunctionsProxy.IsolatedProcess\GraphQL.AzureFunctionsProxy.IsolatedProcess.csproj", "{8A3E7335-60D8-4A1E-B9EC-FF3CCA581FDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWars-AzureFunctions-InProcess", "StarWars-AzureFunctions-InProcess\StarWars-AzureFunctions-InProcess.csproj", "{1B692FC6-4C6B-46B4-BBE7-BF405937380F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarWars-AzureFunctions-InProcess", "StarWars-AzureFunctions-InProcess\StarWars-AzureFunctions-InProcess.csproj", "{1B692FC6-4C6B-46B4-BBE7-BF405937380F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
