@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text;
 using Functions.Tests;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Host.Executors;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

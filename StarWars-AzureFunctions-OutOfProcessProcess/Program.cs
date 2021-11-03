@@ -1,11 +1,12 @@
-﻿using System;
+using Microsoft.Azure.Functions.Worker.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using HotChocolate.AzureFunctionsProxy;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using StarWars.Common;
 
-namespace StarWars_AzureFunctions_OutOfProcessProcess
+namespace StarWars_AzureFunctions_OutOfProcessProcess2
 {
     public class Program
     {
@@ -16,7 +17,6 @@ namespace StarWars_AzureFunctions_OutOfProcessProcess
                 .ConfigureServices(services =>
                 {
                     services
-                        .AddHttpContextAccessor()
                         .AddStarWarsServices();
 
                     services

@@ -1,26 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
-    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-    <RootNamespace>StarWars_AzureFunctions_OutOfProcessProcess</RootNamespace>
+    <RootNamespace>StarWars.AzureFunctionsIsolatedProcess</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="12.0.1" />
-    <PackageReference Include="HotChocolate.Data" Version="12.0.1" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.5.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.3.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.3.0" OutputItemType="Analyzer" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.5.2" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\GraphQL.AzureFunctionsProxy\GraphQL.AzureFunctionsProxy.csproj" />
+    <ProjectReference Include="..\GraphQL.AzureFunctionsProxy.IsolatedProcess\GraphQL.AzureFunctionsProxy.IsolatedProcess.csproj" />
     <ProjectReference Include="..\StarWars.Common\StarWars.GraphQL.Common.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -30,5 +25,4 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-
 </Project>

@@ -1,45 +1,34 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using HotChocolate.AzureFunctionsProxy;
-using System.Threading;
+using HotChocolate.AzureFunctionsProxy.IsolatedProcess;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
 
-namespace StarWars.AzureFunctions
+namespace StarWars.AzureFunctionsIsolatedProcess
 {
-    /// <summary>
-    /// AzureFunction Endpoint for the Star Wars GraphQL Schema queries
-    /// NOTE: This class is not marked as static so that .Net Core DI handles injecting
-    ///         the Executor Proxy for us.
-    /// </summary>
     public class StarWarsFunctionEndpoint
     {
-        private readonly IGraphQLAzureFunctionsExecutorProxy _graphQLExecutorProxy;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IGraphQLAzureFunctionsExecutorProxy _graphqlExecutorProxy;
 
-        public StarWarsFunctionEndpoint(IGraphQLAzureFunctionsExecutorProxy graphQLExecutorProxy, IHttpContextAccessor httpContextAccessor)
+        public StarWarsFunctionEndpoint(IGraphQLAzureFunctionsExecutorProxy graphqlExecutorProxy)
         {
-            _graphQLExecutorProxy = graphQLExecutorProxy;
-            _httpContextAccessor = httpContextAccessor;
+            _graphqlExecutorProxy = graphqlExecutorProxy;
         }
 
         [Function(nameof(StarWarsFunctionEndpoint))]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "graphql")] HttpRequestData req,
-            ILogger logger,
-            CancellationToken cancellationToken
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "graphql")] HttpRequestData req,
+            FunctionContext executionContext
         )
         {
-            logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
+            var logger = executionContext.GetLogger<StarWarsFunctionEndpoint>();
+            logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions (Isolated Process)...");
 
-            return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
-                _httpContextAccessor.HttpContext,
-                logger,
-                cancellationToken
-            ).ConfigureAwait(false);
+            var response = await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(req, logger).ConfigureAwait(false);
+
+            return response;
         }
     }
 }

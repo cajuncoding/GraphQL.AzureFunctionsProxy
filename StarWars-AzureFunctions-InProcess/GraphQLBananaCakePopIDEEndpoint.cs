@@ -1,12 +1,10 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using HotChocolate.AzureFunctionsProxy;
 using System.Threading;
 using System.Web.Http;
@@ -14,9 +12,8 @@ using System.Web.Http;
 namespace StarWars.AzureFunctions
 {
     /// <summary>
-    /// AzureFunction Endpoint for the Star Wars GraphQL Schema queries
-    /// NOTE: This class is not marked as static so that .Net Core DI handles injecting
-    ///         the Executor Proxy for us.
+    /// AzureFunction Endpoint for the Star Wars GraphQL Schema queries and Banana Cake Pop binary/asset handling
+    /// NOTE: This class is not marked as static so that .Net Core DI handles injecting the Executor Proxy for us.
     /// </summary>
     public class GraphQLBananaCakePopEndpoint
     {
@@ -44,11 +41,13 @@ namespace StarWars.AzureFunctions
                 return new BadRequestErrorMessageResult("POST or GET GraphQL queries are invalid for the GraphQL IDE endpoint.");
             }
 
-            return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
-                req.HttpContext,
-                logger,
+            var actionResult = await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
+                req.HttpContext, 
+                logger, 
                 cancellationToken
             ).ConfigureAwait(false);
+
+            return actionResult;
         }
     }
 }
