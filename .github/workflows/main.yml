@@ -38,4 +38,11 @@ jobs:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: GraphQL.AzureFunctionsProxy/GraphQL.AzureFunctionsProxy.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      
+      - name: "Publish NuGet: GraphQL.AzureFunctionsProxy.IsolatedProcess"
+        uses: brandedoutcast/publish-nuget@v2.5.5
+        with:
+          # Filepath of the project to be packaged, relative to root of repository
+          PROJECT_FILE_PATH: GraphQL.AzureFunctionsProxy.IsolatedProcess/GraphQL.AzureFunctionsProxy.IsolatedProcess.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           
