@@ -1,6 +1,5 @@
 ﻿using HotChocolate.AspNetCore;
 using HotChocolate.Execution;
-using HotChocolate.Language;
 using RequestDelegate = Microsoft.AspNetCore.Http.RequestDelegate;
 using System;
 using System.Threading.Tasks;

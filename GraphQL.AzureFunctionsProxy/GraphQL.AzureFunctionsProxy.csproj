@@ -35,6 +35,7 @@ Prior Releases Notes:
     <PackageId>GraphQL.AzureFunctionsProxy</PackageId>
     <AssemblyVersion>12.0.0.1</AssemblyVersion>
     <FileVersion>12.0.0.1</FileVersion>
+    <RootNamespace>HotChocolate.AzureFunctionsProxy</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

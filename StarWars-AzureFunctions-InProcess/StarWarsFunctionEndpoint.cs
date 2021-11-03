@@ -19,11 +19,11 @@ namespace StarWars.AzureFunctions
     /// </summary>
     public class StarWarsFunctionEndpoint
     {
-        private readonly IGraphQLAzureFunctionsExecutorProxy _graphQLExecutorProxy;
+        private readonly IGraphQLAzureFunctionsExecutorProxy _graphqlExecutorProxy;
 
-        public StarWarsFunctionEndpoint(IGraphQLAzureFunctionsExecutorProxy graphQLExecutorProxy)
+        public StarWarsFunctionEndpoint(IGraphQLAzureFunctionsExecutorProxy graphqlExecutorProxy)
         {
-            _graphQLExecutorProxy = graphQLExecutorProxy;
+            _graphqlExecutorProxy = graphqlExecutorProxy;
         }
 
         [FunctionName(nameof(StarWarsFunctionEndpoint))]
@@ -35,7 +35,7 @@ namespace StarWars.AzureFunctions
         {
             logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
 
-            return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
+            return await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(
                 req.HttpContext,
                 logger,
                 cancellationToken
