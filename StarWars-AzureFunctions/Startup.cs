@@ -5,6 +5,7 @@ using StarWars.Repositories;
 using StarWars.Reviews;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using HotChocolate.AzureFunctionsProxy;
+using StarWars.Common;
 
 //CRITICAL: Here we self-wire up the Startup into the Azure Functions framework!
 [assembly: FunctionsStartup(typeof(StarWars.Startup))]
@@ -24,31 +25,13 @@ namespace StarWars
             var services = builder.Services;
 
             // Add the custom services like repositories etc ...
-            services.AddSingleton<ICharacterRepository, CharacterRepository>();
-            services.AddSingleton<IReviewRepository, ReviewRepository>();
+            services.AddStarWarsServices();
 
             // Add GraphQL Services
             //Updated to Initialize StarWars with new v11+ configuration...
             services
                 .AddGraphQLServer()
-                .AddQueryType(d => d.Name("Query"))
-                .AddMutationType(d => d.Name("Mutation"))
-                //Disabled Subscriptions for v11+ and Azure Functions Example due to 
-                //  supportability in Serverless architecture...
-                //.AddSubscriptionType(d => d.Name("Subscription"))
-                .AddType<CharacterQueries>()
-                .AddType<ReviewQueries>()
-                .AddType<ReviewMutations>()
-                //Disabled Subscriptions for v11+ and Azure Functions Example due to 
-                //  supportability in Serverless architecture...
-                //.AddType<ReviewSubscriptions>()
-                .AddType<Human>()
-                .AddType<Droid>()
-                .AddType<Starship>()
-                //Now Required in v11+ to support the Attribute Usage (e.g. you may see the
-                //  error: No filter convention found for scope `none`
-                .AddFiltering()
-                .AddSorting();
+                .ConfigureStarWarsGraphQLServer();
 
             //Finally Initialize AzureFunctions Executor Proxy here...
             //You man Provide a specific SchemaName for multiple Functions (e.g. endpoints).

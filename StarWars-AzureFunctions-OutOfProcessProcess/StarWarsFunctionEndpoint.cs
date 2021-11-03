@@ -1,14 +1,12 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using HotChocolate.AzureFunctionsProxy;
 using System.Threading;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace StarWars.AzureFunctions
 {
@@ -19,24 +17,26 @@ namespace StarWars.AzureFunctions
     /// </summary>
     public class StarWarsFunctionEndpoint
     {
-        private readonly IGraphQLAzureFunctionsExecutorProxy _graphqlExecutorProxy;
+        private readonly IGraphQLAzureFunctionsExecutorProxy _graphQLExecutorProxy;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public StarWarsFunctionEndpoint(IGraphQLAzureFunctionsExecutorProxy graphqlExecutorProxy)
+        public StarWarsFunctionEndpoint(IGraphQLAzureFunctionsExecutorProxy graphQLExecutorProxy, IHttpContextAccessor httpContextAccessor)
         {
-            _graphqlExecutorProxy = graphqlExecutorProxy;
+            _graphQLExecutorProxy = graphQLExecutorProxy;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        [FunctionName(nameof(StarWarsFunctionEndpoint))]
+        [Function(nameof(StarWarsFunctionEndpoint))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "graphql")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "graphql")] HttpRequestData req,
             ILogger logger,
             CancellationToken cancellationToken
         )
         {
             logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
 
-            return await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(
-                req.HttpContext,
+            return await _graphQLExecutorProxy.ExecuteFunctionsQueryAsync(
+                _httpContextAccessor.HttpContext,
                 logger,
                 cancellationToken
             ).ConfigureAwait(false);

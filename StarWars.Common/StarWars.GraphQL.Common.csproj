@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HotChocolate.Data" Version="12.0.1" />
+    <PackageReference Include="HotChocolate.Execution" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>
