@@ -45,7 +45,8 @@ namespace HotChocolate.AzureFunctionsProxy
                 requestUri: httpRequestData.Url,
                 requestHeadersCollection: httpRequestData.Headers,
                 requestBody: await httpRequestData.ReadAsStringAsync().ConfigureAwait(false),
-                requestBodyContentType: httpRequestData.GetContentType()
+                requestBodyContentType: httpRequestData.GetContentType(),
+                claimsIdentities: httpRequestData.Identities
             );
 
             //Ensure we track the HttpContext internally for cleanup when disposed!
