@@ -7,7 +7,7 @@ using HotChocolate.Types;
 
 namespace GraphQL.AzureFunctionsProxy.Tests.GraphQL
 {
-    [ExtendObjectType(Name = "Query")]
+    [ExtendObjectType("Query")]
     public class HelloWorldResolver
     {
         [GraphQLName("hello")]

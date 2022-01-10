@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
-using HotChocolate.Types.Pagination;
 using StarWars.Characters;
 using StarWars.Repositories;
 
 namespace StarWars.Reviews
 {
-    [ExtendObjectType(Name = "Query")]
+    [ExtendObjectType("Query")]
     public class ReviewQueries
     {
         [UsePaging]

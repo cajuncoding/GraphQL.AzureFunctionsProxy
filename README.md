@@ -2,6 +2,12 @@
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11 & v12.
 
 **Update Notes:**
+- Bumped to HC v12.4.1
+- Added Build Target for .Net 6.0 now that it's fully supported for In-Process Azure Functions!
+- Updated Star Wars InProcess Demo app to .Net 6 with Azuzr Functions v4.0.
+- Added marshalling of RequestData.ClaimsIdentities into HttpContext ClaimsPrincipal for IsolatedProcess support in GraphQL.AzureFunctionsProxy.IsolatedProcess; now accessible from HttpContext.User.
+
+_Prior Release Notes:_
 - Added Support for Azure Functions using .Net 5 in the [Isolated Process Model (Out-of-process)](https://docs.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide).
   - This allows the Isolated Process to have the same support for features/functionality of HC as the in-process model including:
     - GraphQL execution with maximum out-of-the-box support (e.g.BatchRequests, Extension values, etc...)
@@ -11,8 +17,6 @@
     - This package provides the necessary adaptation for the Function Request/Response model for HotChocolate to Consume, but is as easy as calling the overload (custom extension) that takes in the `HttpRequestData` provided by the isolated process.
     - [Example below here...](#b-isolated-process-model-example)
 - Added fully functioning [demonstration Project using the .Net 5 in the isolated process model here](https://github.com/cajuncoding/GraphQL.AzureFunctionsProxy/tree/main/StarWars-AzureFunctions-IsolatedProcess).
-
-_Prior Release Notes:_
 - Updated for HotChocolate v12 support!
 - Enhanced StarWars Demo for testing/validating with v12 for additional manual tests.
 - With this major update, I'm now correctly calling the GraphQL IDE "Banana Cake Pop" instead of "Playground" (which is the Old IDE).

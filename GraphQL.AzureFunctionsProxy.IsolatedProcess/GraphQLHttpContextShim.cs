@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -55,7 +58,8 @@ namespace HotChocolate.AzureFunctionsProxy
             Uri requestUri,
             HttpHeadersCollection requestHeadersCollection,
             string requestBody = null,
-            string requestBodyContentType = "application/json"
+            string requestBodyContentType = "application/json",
+            IEnumerable<ClaimsIdentity> claimsIdentities = null
         )
         {
             //Initialize the root Http Context (Container)...
@@ -87,6 +91,12 @@ namespace HotChocolate.AzureFunctionsProxy
             //Initialize a valid Stream for the Response (must be tracked & Disposed of!)
             //NOTE: Default Body is a NullStream...which ignores all Reads/Writes.
             httpResponse.Body = new MemoryStream();
+
+            //Proxy over any possible authentication claims if available
+            if (claimsIdentities?.Any() == true)
+            {
+                httpContext.User = new ClaimsPrincipal(claimsIdentities);
+            }
 
             return httpContext;
         }
