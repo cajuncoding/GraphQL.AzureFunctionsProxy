@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.Data" Version="12.4.1" />
-    <PackageReference Include="HotChocolate.Execution" Version="12.4.1" />
+    <PackageReference Include="HotChocolate.Data" Version="12.5.0" />
+    <PackageReference Include="HotChocolate.Execution" Version="12.5.0" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,14 @@
 ﻿# GraphQL.AzureFunctionsProxy
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11 & v12.
 
-**Update Notes:**
+**Update Notes for v12.5.0.0**
+- Added Support for new HC v12.5 which changed middleware signatures; enabling support for OpenTelemetry, etc.
+
+_Prior Release Notes:_
 - Bumped to HC v12.4.1
 - Added Build Target for .Net 6.0 now that it's fully supported for In-Process Azure Functions!
 - Updated Star Wars InProcess Demo app to .Net 6 with Azuzr Functions v4.0.
 - Added marshalling of RequestData.ClaimsIdentities into HttpContext ClaimsPrincipal for IsolatedProcess support in GraphQL.AzureFunctionsProxy.IsolatedProcess; now accessible from HttpContext.User.
-
-_Prior Release Notes:_
 - Added Support for Azure Functions using .Net 5 in the [Isolated Process Model (Out-of-process)](https://docs.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide).
   - This allows the Isolated Process to have the same support for features/functionality of HC as the in-process model including:
     - GraphQL execution with maximum out-of-the-box support (e.g.BatchRequests, Extension values, etc...)

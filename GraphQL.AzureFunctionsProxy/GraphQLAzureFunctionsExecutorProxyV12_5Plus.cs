@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using HotChocolate.AspNetCore.Instrumentation;
 using HotChocolate.AspNetCore.Serialization;
 
 namespace HotChocolate.AzureFunctionsProxy
@@ -18,14 +19,15 @@ namespace HotChocolate.AzureFunctionsProxy
     ///This class that provides a proxy between Azure Functions and the existing HotChocolate Http middleware
     ///  for both GET & POST request processing.
     /// </summary>
-    public class GraphQLAzureFunctionsExecutorProxyV11Plus : IGraphQLAzureFunctionsExecutorProxy
+    public class GraphQLAzureFunctionsExecutorProxyV12_5Plus : IGraphQLAzureFunctionsExecutorProxy
     {
         protected GraphQLAzureFunctionsMiddlewareProxy AzureFunctionsMiddlewareProxy { get; }
 
-        public GraphQLAzureFunctionsExecutorProxyV11Plus(
+        public GraphQLAzureFunctionsExecutorProxyV12_5Plus(
             IRequestExecutorResolver graphQLExecutorResolver,
             IHttpResultSerializer graphQLResultSerializer,
             IHttpRequestParser graphQLRequestParser,
+            IServerDiagnosticEvents diagnosticEvents,
             NameString schemaName = default,
             GraphQLAzureFunctionsConfigOptions options = null
         )
@@ -34,6 +36,7 @@ namespace HotChocolate.AzureFunctionsProxy
                 graphQLExecutorResolver,
                 graphQLResultSerializer,
                 graphQLRequestParser,
+                diagnosticEvents,
                 schemaName,
                 options
             );

@@ -49,7 +49,10 @@ namespace GraphQL.AzureFunctionsProxy.Tests
         {   //arrange
             using var functionTestCtx = AzureFunctionTestFactory.CreateFunctionTestContext<HelloWorldFunction>(new HelloWorldFunctionsStartup());
 
-            var httpRequest = functionTestCtx.CreateHttpGetRequest("/api/graphql/manifest.json", "application/json");
+            //BBernard - 01/26/2022
+            //NOTE: As of HC v12.5+ and the new version of BCP the manifest file is now manifest.webmanifest (vs manifest.json).
+            //var httpRequest = functionTestCtx.CreateHttpGetRequest("/api/graphql/manifest.webmanifest", "application/json");
+            var httpRequest = functionTestCtx.CreateHttpGetRequest("/api/graphql/manifest.webmanifest", "application/json");
 
             var helloWorldFunction = functionTestCtx.ResolveFunctionWithDependencies<HelloWorldFunction>();
 
