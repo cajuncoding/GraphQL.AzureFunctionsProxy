@@ -13,6 +13,9 @@ namespace GraphQL.AzureFunctionsProxy.Tests.GraphQL
         [GraphQLName("hello")]
         public Task<string> GetHelloAsync(string name = "")
         {
+            if (name.Equals("Create Error!", StringComparison.OrdinalIgnoreCase))
+                throw new Exception($"Generated error because Argument value is [{name}]");
+
             var result = string.IsNullOrWhiteSpace(name)
                 ? "Hello World!"
                 : $"Hello {name}!";

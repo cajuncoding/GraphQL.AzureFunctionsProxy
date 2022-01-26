@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- ONLY Net Core App 3.1 & .Net 6.0 are supported in-process in Azure Functions; and HotChocolate requires these (e.g. cannot be .Net Standard 2.1) because it's not merely a library -->
     <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
-    <Version>12.4.1.0</Version>
+    <Version>12.5.0.0</Version>
     <Authors>BBernard / CajunCoding</Authors>
     <Company>CajunCoding</Company>
     <Description>This is a extension package for HotChocolate GraphQL framework to enable execution within AzureFunctions V1/V2 using the new v12 API. Provides very easy integration with Azure Functions with maximum support for out-of-the-box HotChocolate functionality.</Description>
@@ -11,23 +11,24 @@
     <PackageProjectUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
     <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless, azurefunctionsproxy, graph, ql</PackageTags>
-    <PackageReleaseNotes>v12.4.1.0 Release Notes:
-- Bumped to HC v12.4.1
-- Added Build Target for .Net 6.0 now that it's fully supported for In-Process Azure Functions!
-- Added marshalling of RequestData.ClaimsIdentities into HttpContext ClaimsPrincipal for IsolatedProcess support in GraphQL.AzureFunctionsProxy.IsolatedProcess; now accessible from HttpContext.User.
+    <PackageReleaseNotes>v12.5.0.0 Release Notes:
+		- Added Support for new HC v12.5 which changed middleware signatures; enabling support for OpenTelemetry, etc.
 
-Prior Releases Notes:
-- Fully updated for new Hot Chocolate v12 released today (09/28/2021) with no significant breaking changes.
-- Corrected GraphQL IDE naming to now be "Banana Cake Pop" instead of incorrrectly calling it "Playground" (the old IDE).
-- Original option EnablePlaygroundWebApp is now deprecated as obsolete and will be removed in a future release; use EnableBananaCakePop instead.
-- Default route is now /graphql/bcp/ instead of /graphql/playground.
-- Updated all references to v11 in code, comments, and readme (including some class names) to now reference v11+ for consistency; non-breaking changes as long as custom extensions for proper initialization is used.
-- Otherwise there are no other breaking changes other than IDE route path.
-- Bumped to HC v11.3.8
-- Update Nuget package for deployment of latest (last) version compatible with v11; v12 is being released today (09/28/2021)
-- Bumped to HC v11.0.7
-- Added support for download of the Schema (?SDL)
-- Added support for functioning GraphQL IDE (when configured correctly in the Azure Function HttpTrigger &amp; Route Binding)
+		Prior Releases Notes:
+		- Bumped to HC v12.4.1
+		- Added Build Target for .Net 6.0 now that it's fully supported for In-Process Azure Functions!
+		- Added marshalling of RequestData.ClaimsIdentities into HttpContext ClaimsPrincipal for IsolatedProcess support in GraphQL.AzureFunctionsProxy.IsolatedProcess; now accessible from HttpContext.User.
+		- Fully updated for new Hot Chocolate v12 released today (09/28/2021) with no significant breaking changes.
+		- Corrected GraphQL IDE naming to now be "Banana Cake Pop" instead of incorrrectly calling it "Playground" (the old IDE).
+		- Original option EnablePlaygroundWebApp is now deprecated as obsolete and will be removed in a future release; use EnableBananaCakePop instead.
+		- Default route is now /graphql/bcp/ instead of /graphql/playground.
+		- Updated all references to v11 in code, comments, and readme (including some class names) to now reference v11+ for consistency; non-breaking changes as long as custom extensions for proper initialization is used.
+		- Otherwise there are no other breaking changes other than IDE route path.
+		- Bumped to HC v11.3.8
+		- Update Nuget package for deployment of latest (last) version compatible with v11; v12 is being released today (09/28/2021)
+		- Bumped to HC v11.0.7
+		- Added support for download of the Schema (?SDL)
+		- Added support for functioning GraphQL IDE (when configured correctly in the Azure Function HttpTrigger &amp; Route Binding)
 - Added ConfigureAwait(false) to all awaits for performance.
 - Bumped to HC v11.0.4
 - Bump to HotChocolate v11.0.1 which now resolves a bug that we helped identify with interfaces in the initial release of v11.0.0.
@@ -37,8 +38,8 @@ Prior Releases Notes:
 </PackageReleaseNotes>
     <Copyright>Copyright © 2020</Copyright>
     <PackageId>GraphQL.AzureFunctionsProxy</PackageId>
-    <AssemblyVersion>12.4.1.0</AssemblyVersion>
-    <FileVersion>12.4.1.0</FileVersion>
+    <AssemblyVersion>12.5.0.0</AssemblyVersion>
+    <FileVersion>12.5.0.0</FileVersion>
     <RootNamespace>HotChocolate.AzureFunctionsProxy</RootNamespace>
   </PropertyGroup>
 
@@ -47,8 +48,8 @@ Prior Releases Notes:
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="12.4.1" />
-    <PackageReference Include="HotChocolate.Data" Version="12.4.1" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="12.5.0" />
+    <PackageReference Include="HotChocolate.Data" Version="12.5.0" />
   </ItemGroup>
 
 </Project>

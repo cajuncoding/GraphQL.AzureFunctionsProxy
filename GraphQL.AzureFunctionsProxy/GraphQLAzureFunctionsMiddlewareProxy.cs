@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
+using HotChocolate.AspNetCore.Instrumentation;
 using HotChocolate.AspNetCore.Serialization;
 using Microsoft.Extensions.FileProviders;
 
@@ -28,6 +29,7 @@ namespace HotChocolate.AzureFunctionsProxy
         protected IHttpResultSerializer ResultSerializer { get; }
         protected IHttpRequestParser RequestParser { get; }
         protected IFileProvider FileProvider { get; }
+        protected IServerDiagnosticEvents DiagnosticEvents { get; }
         protected PathString RoutePath { get; }
         protected NameString SchemaName { get; }
 
@@ -38,6 +40,7 @@ namespace HotChocolate.AzureFunctionsProxy
             IRequestExecutorResolver graphQLExecutorResolver,
             IHttpResultSerializer graphQLResultSerializer,
             IHttpRequestParser graphQLRequestParser,
+            IServerDiagnosticEvents diagnosticEvents,
             NameString schemaName = default,
             GraphQLAzureFunctionsConfigOptions options = null
         )
@@ -57,6 +60,9 @@ namespace HotChocolate.AzureFunctionsProxy
 
             this.RequestParser = graphQLRequestParser ??
                 throw new ArgumentNullException(nameof(graphQLRequestParser), GRAPHQL_MIDDLEWARE_INIT_ERROR);
+
+            this.DiagnosticEvents = diagnosticEvents ??
+                throw new ArgumentNullException(nameof(diagnosticEvents), GRAPHQL_MIDDLEWARE_INIT_ERROR);
 
             //The File Provider is initialized internally as an EmbeddedFileProvider
             this.FileProvider = GraphQLInitHelpers.CreateEmbeddedFileProvider();
@@ -103,6 +109,7 @@ namespace HotChocolate.AzureFunctionsProxy
                     this.ExecutorResolver,
                     this.ResultSerializer,
                     this.RequestParser,
+                    this.DiagnosticEvents,
                     this.SchemaName
                 );
                 this.MiddlewareProxyDelegate = (httpContext) => httpGetMiddlewareShim.InvokeAsync(httpContext);
@@ -138,6 +145,7 @@ namespace HotChocolate.AzureFunctionsProxy
                     this.MiddlewareProxyDelegate,
                     this.ExecutorResolver,
                     this.ResultSerializer,
+                    this.DiagnosticEvents,
                     this.SchemaName,
                     //New v12 parameter set to Integrated to enable integrated/default functionality (compatible with v11 behavior).
                     MiddlewareRoutingType.Integrated
@@ -153,8 +161,10 @@ namespace HotChocolate.AzureFunctionsProxy
                 this.ExecutorResolver,
                 this.ResultSerializer,
                 this.RequestParser,
+                this.DiagnosticEvents,
                 this.SchemaName
             );
+            
             this.MiddlewareProxyDelegate = (httpContext) => httpPostMiddlewareShim.InvokeAsync(httpContext);
 
             //RETURN the Post Middleware as the Primary Middleware reference...
@@ -179,7 +189,7 @@ namespace HotChocolate.AzureFunctionsProxy
         /// <returns></returns>
         public virtual async Task<IErrorHandler> GetErrorHandlerAsync(CancellationToken cancellationToken)
         {
-            IRequestExecutor requestExecutor = await this.PrimaryMiddleware.GetExecutorAsync(cancellationToken).ConfigureAwait(false);
+            IRequestExecutor requestExecutor = await this.ExecutorResolver.GetRequestExecutorAsync(this.SchemaName, cancellationToken).ConfigureAwait(false);
 
             //Unable to use the HotChocolate Helper method GetErrorHandler() from RequestExecutorExtensions
             //  because it is marked as internal only, however, we can directly use the DI Provider in the same way.
