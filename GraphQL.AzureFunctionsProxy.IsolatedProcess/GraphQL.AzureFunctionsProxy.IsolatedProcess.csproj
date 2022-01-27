@@ -1,25 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>HotChocolate.AzureFunctionsProxy</RootNamespace>
-    <Description>This is a extension package for HotChocolate GraphQL framework to enable execution within AzureFunctions V3 with .Net 5 isolated process model (e.g. out-of-process).  It enables the new HotChocolate GraphQL v12 API and provides very easy integration with Azure Functions with maximum support for out-of-the-box HotChocolate functionality -- including Schema Download &amp; Banana Cake Pop Web IDE.</Description>
-    <Authors>BBernard / CajunCoding</Authors>
-    <Company>CajunCoding</Company>
-    <Copyright>Copyright © 2021</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
-    <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless, azurefunctionsproxy, graph, ql, .net 5, dotnet5, net5.0, isolated process, out of process</PackageTags>
-    <PackageReleaseNotes>Release Notes:
-		- Updated to support HC v12.4.1 in Azure Functions Isolated process model (out-of-process).
-		- Added marshalling of RequestData.ClaimsIdentities into HttpContext ClaimsPrincipal for IsolatedProcess support in GraphQL.AzureFunctionsProxy.IsolatedProcess; now accessible from HttpContext.User.
+	  <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+	  <Version>12.5.0.0</Version>
+	  <Authors>BBernard / CajunCoding</Authors>
+	  <Company>CajunCoding</Company>
+	  <Description>This is a extension package for HotChocolate GraphQL framework to enable execution within AzureFunctions V3 with .Net 5 isolated process model (e.g. out-of-process).  It enables the new HotChocolate GraphQL v12 API and provides very easy integration with Azure Functions with maximum support for out-of-the-box HotChocolate functionality -- including Schema Download &amp; Banana Cake Pop Web IDE.</Description>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageProjectUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/cajuncoding/HotChocolate.AzureFunctionsProxy</RepositoryUrl>
+	  <PackageTags>graphql, graph-ql, hotchocolate, azure, functions, serverless, azurefunctionsproxy, graph, ql, .net 5, dotnet5, net5.0, isolated process, out of process</PackageTags>
+	  <PackageReleaseNotes>
+		  v12.5.0.0 Release Notes:
+		  - Added Support for new HC v12.5 which changed middleware signatures; enabling support for OpenTelemetry, etc.
+		  - Added Support to target .Net 6 (in addition to .Net 5) for GraphQL.AzureFunctionsProxy.IsolatedProcess
 
-        Prior Release Notes:
-	    - Initial for HC v12.0.0 with AzureFunctions using .Net 5 in the isolated process model (out-of-process).
-		- Has support for AzureFunctionsProxy v12.0.0 including support for Schema Download &amp; Banana Cake Pop Web IDE.
-	</PackageReleaseNotes>
-    <Version>12.4.1</Version>
+		  Prior Release Notes:
+		  - Updated to support HC v12.4.1 in Azure Functions Isolated process model (out-of-process).
+		  - Added marshalling of RequestData.ClaimsIdentities into HttpContext ClaimsPrincipal for IsolatedProcess support in GraphQL.AzureFunctionsProxy.IsolatedProcess; now accessible from HttpContext.User.
+		  - Initial for HC v12.0.0 with AzureFunctions using .Net 5 in the isolated process model (out-of-process).
+		  - Has support for AzureFunctionsProxy v12.0.0 including support for Schema Download &amp; Banana Cake Pop Web IDE.
+	  </PackageReleaseNotes>
+	  <Copyright>Copyright © 2021</Copyright>
+	  <RootNamespace>HotChocolate.AzureFunctionsProxy</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

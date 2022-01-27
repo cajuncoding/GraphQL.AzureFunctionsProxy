@@ -29,13 +29,13 @@
 		- Bumped to HC v11.0.7
 		- Added support for download of the Schema (?SDL)
 		- Added support for functioning GraphQL IDE (when configured correctly in the Azure Function HttpTrigger &amp; Route Binding)
-- Added ConfigureAwait(false) to all awaits for performance.
-- Bumped to HC v11.0.4
-- Bump to HotChocolate v11.0.1 which now resolves a bug that we helped identify with interfaces in the initial release of v11.0.0.
-- Updated to support namespace changes in HotChocolate v11 rc.03 with synced version here as v11.0.0.3. Bumped HotChocolate version to v11-rc.03. 
-- Prior release Changed Repo &amp; Package names to eliminate conflict risks with the core HotChocolate packages. 
-- Updated this package to now be stable v11 (no longer preview).  Additional testing and use has shown this to be stable and actively used in projects in preparation for v11 official release.
-</PackageReleaseNotes>
+		- Added ConfigureAwait(false) to all awaits for performance.
+		- Bumped to HC v11.0.4
+		- Bump to HotChocolate v11.0.1 which now resolves a bug that we helped identify with interfaces in the initial release of v11.0.0.
+		- Updated to support namespace changes in HotChocolate v11 rc.03 with synced version here as v11.0.0.3. Bumped HotChocolate version to v11-rc.03. 
+		- Prior release Changed Repo &amp; Package names to eliminate conflict risks with the core HotChocolate packages. 
+		- Updated this package to now be stable v11 (no longer preview).  Additional testing and use has shown this to be stable and actively used in projects in preparation for v11 official release.
+	</PackageReleaseNotes>
     <Copyright>Copyright © 2020</Copyright>
     <PackageId>GraphQL.AzureFunctionsProxy</PackageId>
     <AssemblyVersion>12.5.0.0</AssemblyVersion>
