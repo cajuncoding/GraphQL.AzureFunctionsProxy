@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using HotChocolate.AzureFunctionsProxy;
 using HotChocolate.AzureFunctionsProxy.IsolatedProcess;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,8 @@ namespace StarWars.AzureFunctionsIsolatedProcess
         {
             var logger = executionContext.GetLogger<StarWarsFunctionEndpoint>();
             logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions (Isolated Process)...");
+
+            req.Headers.Add("Wazzup", "YEAH the HttpContextAccessor works!");
 
             var response = await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(req, logger).ConfigureAwait(false);
 

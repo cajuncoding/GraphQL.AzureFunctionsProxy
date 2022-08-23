@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace HotChocolate.AzureFunctionsProxy.IsolatedProcess
@@ -26,6 +28,9 @@ namespace HotChocolate.AzureFunctionsProxy.IsolatedProcess
             //Build the Http Context Shim for HotChocolate to consume via the AzureFunctionsProxy...
             var graphqlHttpContextShim = await graphQLHttpContextShim.CreateGraphQLHttpContextAsync();
 
+            var httpContextAccessor = httpRequestData.FunctionContext.InstanceServices.GetService<IHttpContextAccessor>();
+            if (httpContextAccessor != null)
+                httpContextAccessor.HttpContext = graphqlHttpContextShim;
 
             //Execute the full HotChocolate middleware pipeline via AzureFunctionsProxy...
             var logger = log ?? httpRequestData.FunctionContext.GetLogger<IGraphQLAzureFunctionsExecutorProxy>();

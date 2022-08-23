@@ -36,6 +36,7 @@ namespace StarWars.Characters
             [Service] IHttpContextAccessor httpContextAccessor)
         {
             Debug.WriteLine(httpContextAccessor.HttpContext.Items["Wazzup"]);
+            Debug.WriteLine(httpContextAccessor.HttpContext.Request.Headers["Wazzup"]);
             return repository.GetCharacters();
         }
 

@@ -17,6 +17,7 @@ namespace StarWars_AzureFunctions_OutOfProcessProcess2
                 .ConfigureServices(services =>
                 {
                     services
+                        .AddHttpContextAccessor()
                         .AddStarWarsServices();
 
                     services
