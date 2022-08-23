@@ -35,6 +35,8 @@ namespace StarWars.AzureFunctions
         {
             logger.LogInformation("C# GraphQL Request processing via Serverless AzureFunctions...");
 
+            req.HttpContext.Items["Wazzup"] = "YEAH the HttpContextAccessor works!";
+
             return await _graphqlExecutorProxy.ExecuteFunctionsQueryAsync(
                 req.HttpContext,
                 logger,

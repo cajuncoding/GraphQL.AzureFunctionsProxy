@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
+using Microsoft.AspNetCore.Http;
 using StarWars.Repositories;
 
 namespace StarWars.Characters
@@ -30,8 +32,12 @@ namespace StarWars.Characters
         [UseFiltering]
         [UseSorting]
         public IEnumerable<ICharacter> GetCharacters(
-            [Service]ICharacterRepository repository) =>
-            repository.GetCharacters();
+            [Service] ICharacterRepository repository,
+            [Service] IHttpContextAccessor httpContextAccessor)
+        {
+            Debug.WriteLine(httpContextAccessor.HttpContext.Items["Wazzup"]);
+            return repository.GetCharacters();
+        }
 
         /// <summary>
         /// Gets a character by it`s id.
