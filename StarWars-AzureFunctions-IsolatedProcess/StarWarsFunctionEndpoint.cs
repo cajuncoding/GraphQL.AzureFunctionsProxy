@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using HotChocolate.AzureFunctionsProxy;
 using HotChocolate.AzureFunctionsProxy.IsolatedProcess;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;

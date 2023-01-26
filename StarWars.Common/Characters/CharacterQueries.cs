@@ -3,7 +3,6 @@ using System.Diagnostics;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
-using HotChocolate.Types.Relay;
 using Microsoft.AspNetCore.Http;
 using StarWars.Repositories;
 
