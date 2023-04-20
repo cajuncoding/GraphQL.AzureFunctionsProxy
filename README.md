@@ -9,10 +9,10 @@ I collaborated closely with the core HC team to merge the valuable elements of t
 So if you're upgrading to v13 you’ll need to migrate (it’s very easy) to use the OOTB version [as outlined here in the quick migration guide...](migrate_to_hc_v13.md)
 
 
-**Update Notes for v12.5.0.0**
+## Update Notes for v12.5.0.0:
 - Added Support for new HC v12.5 which changed middleware signatures; enabling support for OpenTelemetry, etc.
 
-_Prior Release Notes:_
+**_Prior Release Notes:_**
 - Bumped to HC v12.4.1
 - Added Build Target for .Net 6.0 now that it's fully supported for In-Process Azure Functions!
 - Updated Star Wars InProcess Demo app to .Net 6 with Azuzr Functions v4.0.
