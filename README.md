@@ -2,7 +2,7 @@
 ## An (Unofficial) Extension pack for using HotChocolate GraphQL framework within Azure Functions for v11 & v12.
 
 ## Update Announcement -- Deprecated as of v13:
-As of the new releas of Hot Chocolate GraphQL Server v13, the Azure Functions Proxy and it's feature set are now an OOTB feature of Hot Chococlate -- along with some optimizations since it's part of the core code base! This was announced and shared in the [v13 introduction blog post here!](https://chillicream.com/blog/2023/02/08/new-in-hot-chocolate-13#azure-functions)
+As of the new release of Hot Chocolate GraphQL Server v13, the Azure Functions Proxy and it's feature set are now an OOTB feature of Hot Chococlate -- along with some optimizations since it's part of the core code base! This was announced and shared in the [v13 introduction blog post here!](https://chillicream.com/blog/2023/02/08/new-in-hot-chocolate-13#azure-functions)
 
 I collaborated closely with the core HC team to merge the valuable elements of the `GraphQL.AzureFunctionsProxy` library into HC and enable support for both In-Process and Isolated Process Azure Functions as an OOTB feature of HC now! Therefore as of v13, this project will no longer be maintained as a separate library -- my efforts will be focused on maintaining the core functionality going forward with the HC team!
 
